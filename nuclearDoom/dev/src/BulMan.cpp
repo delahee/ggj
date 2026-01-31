@@ -30,7 +30,7 @@ void BulMan::update(double _dt) {
 		auto& vx		= x[idx];
 		auto& vy		= y[idx];
 		auto& vdx		= dx[idx];
-		auto& vdy		= dy[idx];
+		auto& vdy		= dy[idx]; 
 		
 		auto& vfrictx	= frictX[idx];
 		auto& vfricty	= frictY[idx];

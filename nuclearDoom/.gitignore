@@ -33,7 +33,6 @@ imgui.ini
 /dev/libs/bullet/Bullet3Collision/out
 /dev/libs/bullet/Bullet3Common/out
 /dev/libs/bullet/BulletDynamics/out
-/dev/libs/chaiscript
 /dev/libs/bullet/BulletCollision/out
 /dev/libs/bullet/Bullet3Serialize/BulletFileLoader/out
 /dev/libs/bullet/Bullet3Serialize/BulletWorldImporter/out
