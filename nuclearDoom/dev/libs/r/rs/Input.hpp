@@ -51,6 +51,11 @@ namespace rs {
 			static bool onAnyPadDown(Pasta::Key k);
 			static bool isAnyPadJustPressed(Pasta::Key k);
 			static bool isAnyPadJustReleased(Pasta::Key k);
+
+			static bool isPressed(Pasta::Key k) { return isDown(k); };
+			static bool isDown(Pasta::Key k);
+			static bool isJustPressed(Pasta::Key k);
+			static bool isJustReleased(Pasta::Key k);
 			static float getWheelValue();
 	};
 

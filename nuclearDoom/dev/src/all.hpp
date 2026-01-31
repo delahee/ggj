@@ -5,6 +5,8 @@
 #include "rd/all.hpp"
 #include "r2/all.hpp"
 #include "r2/im/TilePicker.hpp"
+using namespace r;
+using namespace rs;
 
 #include "Game.hpp"
 #include "Data.hpp"

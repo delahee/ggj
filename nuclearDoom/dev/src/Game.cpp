@@ -3,12 +3,12 @@
 #include <unordered_map>
 #include <EASTL/variant.h>
 
-
 #include "r2/Node.hpp"
 #include "rd/ABitmap.hpp"
 #include "rui/Canvas.hpp"
 #include "r2/StaticBox.hpp"
 
+#include "BulMan.hpp"
 #include "Game.hpp"
 #include "rd/JSerialize.hpp"
 #include "rd/Garbage.hpp"
@@ -19,18 +19,11 @@
 #include "UI.hpp"
 
 using namespace rd;
-static int towerEverBuild = 0;
-static r::Color KIWI = r::Color(0x663931);
+using namespace std::string_literals;
 
 void Game::onFrag(){
 	frags++;
 
-	if (frags % 3 == 0) {
-		auto s = rd::ABitmap::mk("kiwifruit", Data::assets, fragFlow);
-		s->setCenterRatio(0.5, 1);
-		FX::blink(s);
-		sfx("snd/kiwi_up.wav");
-	}
 }
 
 static bool defeated = false;
@@ -59,15 +52,12 @@ void Game::victory() {
 }
 
 void Game::hit() {
-	sfx("snd/hitplayer.wav");
-	if( 0 == livesFlow->nbChildren())
-		defeat();
-	else {
-		livesFlow->children[0]->destroy();
-	}
+	
 }
 
-
+void Game::controls(double dt){
+	player->controls(dt);
+}
 
 Game::Game(r2::Node* _root, r2::Scene* sc, rd::AgentList* parent) : Super(parent) {
 	scRoot = _root;
@@ -76,21 +66,31 @@ Game::Game(r2::Node* _root, r2::Scene* sc, rd::AgentList* parent) : Super(parent
 	Data::init();
 
 	rd::AudioMan::get().init();
-
 	map = new Map(root);
+	ui = new UI(root);
+	bulMan = new BulMan(this,&al);
+	player = new Player(this,root);
+	player->init("player");
+	player->setPixelPos(Cst::W/2, Cst::H/2);
 
+	auto e = new Entity(this,root);
+	e->init("imp");
+	e->setPixelPos(100, 100);
+	nmies.push_back(e);
 	
 }
 
 void Game::update(double dt) {
 	Super::update(dt);
+
+	controls(dt);
 	al.update(dt);
 	tw.update(dt);
 #ifdef PASTA_DEBUG
 	im();	
 #endif
 }
-
+/*
 template <> void Pasta::JReflect::visit(std::vector<Vector2> & v, const char* name) {
 	u32 arrSize = v.size()*2;
 	if (visitArrayBegin(name, arrSize)) {
@@ -128,8 +128,35 @@ static void visitEastl(Pasta::JReflect&jr,eastl::vector<Vector2>& v, const char*
 	}
 	jr.visitArrayEnd(name);
 }
+*/
 
 
 bool Game::im(){
+	using namespace ImGui;
+	static bool opened = true;
+	if (Begin("Game", &opened)) {
+		if (TreeNode("player")) {
+			player->im();
+			TreePop();
+		}
+		int idx = 0;
+		for (auto e : nmies){
+			if (TreeNode("Nmy"s + std::to_string(idx))) {
+				e->im();
+				TreePop();
+			}
+			idx++;
+		}
+		idx = 0;
+		
+		for (; idx < bulMan->nbActive;++idx) {
+			if (TreeNode("Bul "s + std::to_string(idx))) {
+				bulMan->im(idx);
+				TreePop();
+			}
+			idx++;
+		}
+		End();
+	}
 	return false;
 }

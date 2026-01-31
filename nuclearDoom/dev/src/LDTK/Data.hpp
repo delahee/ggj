@@ -29,6 +29,10 @@ namespace ldtk {
 		std::vector<Entity>		instances;
 	};
 
+	struct IntGrid {
+		std::vector<s16> bitmap;
+	};
+
 	class Data {
 	public:
 		std::string identifier;

@@ -16,31 +16,26 @@ void Data::init(){
 
 	{
 		auto d = new EntityData();
-		d->name = "car";
-		d->tags.push_back("vehicle");
-		d->tags.push_back("monster");
-		d->speed = 0.05f;
+		d->name = "imp";
+		d->tags.push_back("nmy");
 		entities[d->name] = d;
 	}
-
 	{
 		auto d = new EntityData();
-		d->name = "bike";
-		d->tags.push_back("vehicle");
-		d->speed = 0.05f;
+		d->name = "player";
+		d->tags.push_back("player");
 		entities[d->name] = d;
 	}
-
 	{
 		auto d = new EntityData();
-		d->name = "bike_park";
-		d->tags.push_back("turret");
-		d->attack = "bike";
-		d->projSpeed = 1.5;
-		d->speed = 0.0f;
-		d->dmg = 5;
-		d->good = true;
-		d->cooldown = 2;
+		d->name = "dummy";
+		d->tags.push_back("dummy");
+		entities[d->name] = d;
+	}
+	{
+		auto d = new EntityData();
+		d->name = "kiwi";
+		d->tags.push_back("kiwi");
 		entities[d->name] = d;
 	}
 

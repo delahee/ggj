@@ -6,7 +6,23 @@
 #include "rd/Garbage.hpp"
 #include "r2/fx/Part.hpp"
 
+static bool inited = false;
+
+static EntityData* dummy = 0;
+static EntityData* imp = 0;
+static EntityData* player = 0;
+EntityData* EntityData::get(const char* name){
+	if( Data::entities.find(name) == Data::entities.end())
+		return dummy;
+	return Data::entities[name];
+}
+
 std::vector<Entity*> Entity::ALL;
+
+void Entity::init(const char* name){
+	EntityData* data = EntityData::get(name);
+	init(data);
+}
 
 void Entity::init(EntityData * _data) {
 	data = _data;
@@ -15,9 +31,7 @@ void Entity::init(EntityData * _data) {
 	else
 		spr->set(Data::assets, data->name.c_str());
 	spr->setCenterRatio(0.5, 0.5);
-	name = data->name + std::to_string(uid);
-	if (!spr->player.isReady())
-		int here = 0;
+	name = data->name + "#" + std::to_string(uid);
 	hp = data->hp;
 	blinking = false;
 	fadingOut= false;
@@ -64,6 +78,8 @@ void Entity::im(){
 void Entity::update(double dt) {
 	Super::update(dt);
 
+	al.update(dt);
+
 	syncPos();
 
 	if (fadingOut) {
@@ -81,6 +97,9 @@ void Entity::update(double dt) {
 	}
 }
 
+void Entity::setPixelPos(float x, float y) {
+	setPixelPos({ x,y });
+}
 void Entity::setPixelPos(const Vector2& pos) {
 	x = pos.x;
 	y = pos.y;
@@ -96,9 +115,38 @@ Vector2 Entity::getPixelPos(){
 	return Vector2((cx + rx) * Cst::GRID, (cy + ry) * Cst::GRID);
 }
 
+void Entity::updateMovement(double dt){
+	rx += dx * dt;
+	ry += dy * dt;
+
+	dx = frictX * dx;
+	dy = frictX * dy;
+
+	while( rx > 1 ){
+		rx--;
+		cx++;
+	}
+
+	while (rx < 0) {
+		rx++;
+		cx--;
+	}
+
+	while (ry > 1) {
+		ry--;
+		cy++;
+	}
+
+	while (ry < 0) {
+		ry++;
+		cy--;
+	}
+}
+
 void Entity::syncPos(){
 	x = std::lrint((cx + rx) * Cst::GRID);
 	y = std::lrint((cy + ry) * Cst::GRID);
+	trsDirty = true;
 }
 
 void Entity::hit(int dmg, EntityData* by) {

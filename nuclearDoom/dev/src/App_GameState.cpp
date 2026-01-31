@@ -52,7 +52,7 @@ static void regularBloom(PixelScene* dts, float durMs) {
 	dts->tw.create(dts, (rs::TVar)PixelScene::VBLOOM_CB, c.b, TType::TEaseOut, durMs);
 
 	dts->uber.vignetteEnabled = true;
-	dts->tw.create(dts, (rs::TVar)PixelScene::VVIGNETTE_INTENSITY, 1.07, TType::TEaseOut, durMs);
+	dts->tw.create(dts, (rs::TVar)PixelScene::VVIGNETTE_INTENSITY, 1.03, TType::TEaseOut, durMs);
 	dts->tw.create(dts, (rs::TVar)PixelScene::VVIGNETTE_SMOOTHNESS, 1.270, TType::TEaseOut, durMs);
 	dts->tw.create(dts, (rs::TVar)PixelScene::VVIGNETTE_ROUNDNESS, 0.95, TType::TEaseOut, durMs);
 }
@@ -141,6 +141,8 @@ int App_GameState::executeGameState(Pasta::Duration deltaTime) {
 		mainScene->checkEvents();
 		mainScene->update(dt);
 	}
+
+	rs::Sys::exitFrame();
 
 	return -1;
 }

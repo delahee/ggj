@@ -166,11 +166,41 @@ bool rs::Input::isAnyPadJustPressed(Pasta::Key k) {
 	return false;
 }
 
+
 bool rs::Input::isAnyPadJustReleased(Pasta::Key k) {
 	InputMgr* mgr = Pasta::InputMgr::getSingleton();
 	for (unsigned int i = 0; i < CT_PAD_COUNT; i++)
 		if (isKeyJustPressed((Pasta::ControllerType)i, keyboardMap(k)))
 			return true;
+	return false;
+}
+
+bool rs::Input::isDown(Pasta::Key k){
+	InputMgr* mgr = Pasta::InputMgr::getSingleton();
+	if (isKeyDown(CT_KEYBOARD, k)) return true;
+	if (onAnyPadDown(k)) return true;
+	if (mgr->keyIsPressed(Pasta::ControllerType::CT_MOUSE, k))
+		return true;
+	return false;
+}
+
+bool rs::Input::isJustPressed(Pasta::Key k)
+{
+	InputMgr* mgr = Pasta::InputMgr::getSingleton();
+	if (isKeyJustPressed(CT_KEYBOARD, k)) return true;
+	if (isAnyPadJustPressed(k)) return true;
+	if (mgr->keyIsPressed(Pasta::ControllerType::CT_MOUSE, k))
+		return true;
+	return false;
+}
+
+bool rs::Input::isJustReleased(Pasta::Key k)
+{
+	InputMgr* mgr = Pasta::InputMgr::getSingleton();
+	if (isKeyJustReleased(CT_KEYBOARD, k)) return true;
+	if (isAnyPadJustReleased(k)) return true;
+	if (mgr->keyIsReleased(Pasta::ControllerType::CT_MOUSE, k))
+		return true;
 	return false;
 }
 
