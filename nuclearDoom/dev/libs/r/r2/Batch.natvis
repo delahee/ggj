@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?> 
+<AutoVisualizer xmlns="http://schemas.microsoft.com/vstudio/debugger/natvis/2010">
+
+  <Type Name="r2::Batch">
+    <DisplayString>{name} - #{uid}</DisplayString>
+    <Expand>
+      <Item Name="nbElems">nbElems</Item>
+      <Item Name="parent">parent</Item>
+      <LinkedListItems>
+        <Size>nbElems</Size>
+        <HeadPointer>head</HeadPointer>
+        <NextPointer>next</NextPointer>
+        <ValueNode>this</ValueNode>
+      </LinkedListItems>
+    </Expand>
+  </Type>
+
+  <Type Name="r2::BatchElem">
+    <DisplayString>{name} - #{uid}</DisplayString>
+    <Expand>
+      <Item Name="name">name</Item>
+      <Item Name="visible">visible</Item>
+      <Synthetic Name="position">
+        <DisplayString>{{x={x, g}; y={y, g}; z={z, g}}}</DisplayString>
+        <Expand>
+          <Item Name="x">x</Item>
+          <Item Name="y">y</Item>
+          <Item Name="z">z</Item>
+        </Expand>
+      </Synthetic>
+      <Synthetic Name="scale">
+        <DisplayString>{{x={scaleX, g}; y={scaleY, g}}}</DisplayString>
+        <Expand>
+          <Item Name="x">scaleX</Item>
+          <Item Name="y">scaleY</Item>
+        </Expand>
+      </Synthetic>
+      <Item Name="rotation">rotation</Item>
+      <Item Name="color">color</Item>
+      <Item Name="alpha">alpha</Item>
+      <Item Name="tile">tile</Item>
+      <Item Name="batch">batch</Item>
+      <Item Name="next">next</Item>
+    </Expand>
+  </Type>
+  
+</AutoVisualizer>

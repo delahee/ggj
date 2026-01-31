@@ -1,0 +1,15 @@
+#pragma once
+
+
+namespace r2 {
+	enum Align {
+		ALIGN_LEFT = 0,
+		ALIGN_TOP = 0,
+		ALIGN_TOP_LEFT = 0,
+		ALIGN_RIGHT = 1,
+		ALIGN_BOTTOM = 2,
+		ALIGN_HCENTER = 4,
+		ALIGN_VCENTER = 8,
+		ALIGN_CENTER = ALIGN_HCENTER | ALIGN_VCENTER
+	};
+}

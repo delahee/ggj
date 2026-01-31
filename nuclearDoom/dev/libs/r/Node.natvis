@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<AutoVisualizer xmlns="http://schemas.microsoft.com/vstudio/debugger/natvis/2010">
+
+  <Type Name="r2::Node">
+    <DisplayString>{name} - #{uid}</DisplayString>
+    <Expand>
+      <Item Name="name">name</Item>
+      <Item Name="visible">visible</Item>
+      <Synthetic Name="position">
+        <DisplayString>{{x={x, g}; y={y, g}; z={z, g}}}</DisplayString>
+        <Expand>
+          <Item Name="x">x</Item>
+          <Item Name="y">y</Item>
+          <Item Name="z">z</Item>
+        </Expand>
+      </Synthetic>
+      <Synthetic Name="scale">
+        <DisplayString>{{x={scaleX, g}; y={scaleY, g}}}</DisplayString>
+        <Expand>
+          <Item Name="x">scaleX</Item>
+          <Item Name="y">scaleY</Item>
+        </Expand>
+      </Synthetic>
+      <Item Name="rotation">rotation</Item>
+      <Item Name="alpha">alpha</Item>
+      <Item Name="parent">parent</Item>
+      <Item Name="children">children</Item>
+    </Expand>
+  </Type>
+
+</AutoVisualizer>
