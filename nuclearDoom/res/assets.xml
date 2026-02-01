@@ -1,89 +1,92 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- Created with TexturePacker https://www.codeandweb.com/texturepacker -->
-<!-- $TexturePacker:SmartUpdate:63e43cabdb3f1ca94519f2d84ad046d8:afd5e89883e70876444504b7f7297a37:57ef0b4f36012e2dacefebfa7d58e2d4$ -->
-<TextureAtlas imagePath="assets.png" width="511" height="254">
-    <SubTexture name="bike" x="501" y="147" width="9" height="7" frameX="-2" frameY="0" frameWidth="12" frameHeight="7"/>
-    <SubTexture name="bike_park-export" x="308" y="129" width="32" height="20" frameX="0" frameY="-6" frameWidth="32" frameHeight="32"/>
-    <SubTexture name="bike_park" x="308" y="129" width="32" height="20" frameX="0" frameY="-6" frameWidth="32" frameHeight="32"/>
-    <SubTexture name="blob" x="434" y="194" width="16" height="17" frameX="0" frameY="-6" frameWidth="16" frameHeight="32"/>
-    <SubTexture name="blob_attack1" x="434" y="194" width="16" height="17" frameX="0" frameY="-6" frameWidth="16" frameHeight="32"/>
-    <SubTexture name="blob_attack2" x="439" y="213" width="16" height="17" frameX="0" frameY="-6" frameWidth="16" frameHeight="32"/>
-    <SubTexture name="blob_attack3" x="421" y="213" width="16" height="18" frameX="0" frameY="-6" frameWidth="16" frameHeight="32"/>
-    <SubTexture name="blob_attack4" x="491" y="31" width="16" height="23" frameX="0" frameY="-6" frameWidth="16" frameHeight="32"/>
-    <SubTexture name="blob_attack5" x="376" y="95" width="16" height="24" frameX="0" frameY="-6" frameWidth="16" frameHeight="32"/>
-    <SubTexture name="blob_attack6" x="376" y="121" width="16" height="24" frameX="0" frameY="-6" frameWidth="16" frameHeight="32"/>
-    <SubTexture name="boss shoot1" x="355" y="238" width="16" height="15" frameX="0" frameY="0" frameWidth="16" frameHeight="16"/>
-    <SubTexture name="boss shoot2" x="491" y="56" width="16" height="16"/>
-    <SubTexture name="boss shoot3" x="377" y="234" width="16" height="16"/>
-    <SubTexture name="boss1" x="1" y="210" width="96" height="32"/>
-    <SubTexture name="boss2" x="103" y="91" width="96" height="32"/>
-    <SubTexture name="bullet" x="418" y="185" width="14" height="13" frameX="-1" frameY="-1" frameWidth="16" frameHeight="16"/>
-    <SubTexture name="bullet_plasma" x="493" y="205" width="14" height="13" frameX="-1" frameY="-1" frameWidth="16" frameHeight="16"/>
-    <SubTexture name="bullet_rocket" x="418" y="185" width="14" height="13" frameX="-1" frameY="-1" frameWidth="16" frameHeight="16"/>
-    <SubTexture name="bullet_shotgun" x="418" y="168" width="14" height="15" frameX="-2" frameY="0" frameWidth="16" frameHeight="16"/>
-    <SubTexture name="cloud" x="209" y="7" width="90" height="90" frameX="-19" frameY="-21" frameWidth="128" frameHeight="128"/>
-    <SubTexture name="cup" x="325" y="219" width="28" height="29" frameX="-3" frameY="-3" frameWidth="32" frameHeight="32"/>
-    <SubTexture name="cup_nooutline" x="484" y="74" width="26" height="27" frameX="-4" frameY="-4" frameWidth="32" frameHeight="32"/>
-    <SubTexture name="Doom slayer pixel1" x="283" y="141" width="21" height="38" frameX="-6" frameY="-5" frameWidth="32" frameHeight="48"/>
-    <SubTexture name="Doom slayer pixel2" x="271" y="215" width="21" height="38" frameX="-6" frameY="-5" frameWidth="32" frameHeight="48"/>
-    <SubTexture name="elon1" x="397" y="1" width="92" height="71" frameX="-10" frameY="0" frameWidth="128" frameHeight="71"/>
-    <SubTexture name="elon2" x="102" y="125" width="92" height="71" frameX="-10" frameY="0" frameWidth="128" frameHeight="71"/>
-    <SubTexture name="elon3" x="397" y="74" width="85" height="71" frameX="-14" frameY="0" frameWidth="128" frameHeight="71"/>
-    <SubTexture name="factory" x="103" y="7" width="104" height="82" frameX="-5" frameY="-29" frameWidth="128" frameHeight="128"/>
-    <SubTexture name="gradient_linear" x="1" y="1" width="256" height="4"/>
-    <SubTexture name="ground1" x="395" y="234" width="16" height="16"/>
-    <SubTexture name="hammer" x="493" y="220" width="15" height="12" frameX="-1" frameY="-3" frameWidth="17" frameHeight="17"/>
-    <SubTexture name="hardWall1" x="413" y="234" width="16" height="16"/>
-    <SubTexture name="hardWall2" x="413" y="234" width="16" height="16"/>
-    <SubTexture name="imp1" x="484" y="103" width="22" height="42" frameX="-5" frameY="-6" frameWidth="32" frameHeight="48"/>
-    <SubTexture name="imp2" x="283" y="99" width="23" height="40" frameX="-4" frameY="-7" frameWidth="32" frameHeight="48"/>
-    <SubTexture name="lone_9" x="1" y="244" width="9" height="9"/>
-    <SubTexture name="lone_16" x="431" y="233" width="16" height="16"/>
-    <SubTexture name="lone_16s" x="449" y="232" width="16" height="16"/>
-    <SubTexture name="partBloodA" x="434" y="147" width="21" height="23" frameX="-2" frameY="-1" frameWidth="25" frameHeight="25"/>
-    <SubTexture name="partCircle" x="308" y="95" width="32" height="32"/>
-    <SubTexture name="partCircleB" x="342" y="95" width="32" height="32"/>
-    <SubTexture name="partCircleContrast" x="271" y="181" width="32" height="32"/>
-    <SubTexture name="partCircleSmall" x="452" y="194" width="16" height="16"/>
-    <SubTexture name="partDisc1" x="102" y="198" width="55" height="55" frameX="-5" frameY="-6" frameWidth="64" frameHeight="64"/>
-    <SubTexture name="partDisc2" x="208" y="181" width="61" height="61" frameX="-2" frameY="-3" frameWidth="64" frameHeight="64"/>
-    <SubTexture name="partGlow" x="457" y="212" width="16" height="16"/>
-    <SubTexture name="partSmoke" x="201" y="99" width="80" height="80"/>
-    <SubTexture name="partSmokeA" x="301" y="1" width="94" height="92" frameX="-3" frameY="-5" frameWidth="100" frameHeight="100"/>
-    <SubTexture name="partSmokeB" x="1" y="7" width="100" height="100"/>
-    <SubTexture name="partSmokeC" x="1" y="109" width="99" height="99" frameX="0" frameY="-1" frameWidth="100" frameHeight="100"/>
-    <SubTexture name="partSmokeSmallA" x="159" y="198" width="47" height="50" frameX="-3" frameY="0" frameWidth="50" frameHeight="50"/>
-    <SubTexture name="partSphere" x="306" y="151" width="32" height="32"/>
-    <SubTexture name="partSplatterA" x="305" y="185" width="32" height="32"/>
-    <SubTexture name="partSplatterB" x="342" y="129" width="32" height="31" frameX="0" frameY="-1" frameWidth="32" frameHeight="32"/>
-    <SubTexture name="pixel" x="259" y="1" width="4" height="4"/>
-    <SubTexture name="pixel_cross" x="196" y="125" width="3" height="3"/>
-    <SubTexture name="pixel_transp" x="159" y="250" width="3" height="3" frameX="0" frameY="0" frameWidth="4" frameHeight="4"/>
-    <SubTexture name="player" x="491" y="1" width="15" height="28" frameX="0" frameY="-2" frameWidth="16" frameHeight="32"/>
-    <SubTexture name="ui_xbox_a" x="457" y="147" width="20" height="20"/>
-    <SubTexture name="ui_xbox_b" x="479" y="147" width="20" height="20"/>
-    <SubTexture name="ui_xbox_ddown" x="374" y="168" width="20" height="20"/>
-    <SubTexture name="ui_xbox_dleft" x="396" y="168" width="20" height="20"/>
-    <SubTexture name="ui_xbox_down" x="374" y="168" width="20" height="20"/>
-    <SubTexture name="ui_xbox_dright" x="373" y="190" width="20" height="20"/>
-    <SubTexture name="ui_xbox_dup" x="395" y="190" width="20" height="20"/>
-    <SubTexture name="ui_xbox_lb" x="376" y="147" width="27" height="19"/>
-    <SubTexture name="ui_xbox_left" x="396" y="168" width="20" height="20"/>
-    <SubTexture name="ui_xbox_lt" x="340" y="162" width="32" height="25"/>
-    <SubTexture name="ui_xbox_rb" x="405" y="147" width="27" height="19"/>
-    <SubTexture name="ui_xbox_right" x="373" y="190" width="20" height="20"/>
-    <SubTexture name="ui_xbox_rt" x="339" y="189" width="32" height="25"/>
-    <SubTexture name="ui_xbox_share" x="355" y="216" width="20" height="20"/>
-    <SubTexture name="ui_xbox_start" x="377" y="212" width="20" height="20"/>
-    <SubTexture name="ui_xbox_up" x="395" y="190" width="20" height="20"/>
-    <SubTexture name="ui_xbox_x" x="399" y="212" width="20" height="20"/>
-    <SubTexture name="ui_xbox_xbox" x="294" y="219" width="29" height="29" frameX="-1" frameY="-1" frameWidth="30" frameHeight="30"/>
-    <SubTexture name="ui_xbox_y" x="434" y="172" width="20" height="20"/>
-    <SubTexture name="wall1" x="467" y="230" width="16" height="16"/>
-    <SubTexture name="wall2" x="457" y="169" width="16" height="16"/>
-    <SubTexture name="wall3" x="475" y="169" width="16" height="16"/>
-    <SubTexture name="wall4" x="470" y="187" width="16" height="16"/>
-    <SubTexture name="wall5" x="493" y="169" width="16" height="16"/>
-    <SubTexture name="wall6" x="488" y="187" width="16" height="16"/>
-    <SubTexture name="wall7" x="475" y="205" width="16" height="16"/>
+<!-- $TexturePacker:SmartUpdate:d5d1acea8f35a20fa90c519e20815611:249a8cdf7d038d7fd7cd99a24e970b01:57ef0b4f36012e2dacefebfa7d58e2d4$ -->
+<TextureAtlas imagePath="assets.png" width="1044" height="125">
+    <SubTexture name="bike" x="667" y="116" width="9" height="7" frameX="-2" frameY="0" frameWidth="12" frameHeight="7"/>
+    <SubTexture name="bike_park-export" x="1" y="103" width="32" height="20" frameX="0" frameY="-6" frameWidth="32" frameHeight="32"/>
+    <SubTexture name="bike_park" x="1" y="103" width="32" height="20" frameX="0" frameY="-6" frameWidth="32" frameHeight="32"/>
+    <SubTexture name="blob" x="957" y="80" width="16" height="17" frameX="0" frameY="-6" frameWidth="16" frameHeight="32"/>
+    <SubTexture name="blob_attack1" x="957" y="80" width="16" height="17" frameX="0" frameY="-6" frameWidth="16" frameHeight="32"/>
+    <SubTexture name="blob_attack2" x="957" y="99" width="16" height="17" frameX="0" frameY="-6" frameWidth="16" frameHeight="32"/>
+    <SubTexture name="blob_attack3" x="957" y="60" width="16" height="18" frameX="0" frameY="-6" frameWidth="16" frameHeight="32"/>
+    <SubTexture name="blob_attack4" x="952" y="26" width="16" height="23" frameX="0" frameY="-6" frameWidth="16" frameHeight="32"/>
+    <SubTexture name="blob_attack5" x="939" y="62" width="16" height="24" frameX="0" frameY="-6" frameWidth="16" frameHeight="32"/>
+    <SubTexture name="blob_attack6" x="939" y="88" width="16" height="24" frameX="0" frameY="-6" frameWidth="16" frameHeight="32"/>
+    <SubTexture name="blob_bullet1" x="975" y="1" width="30" height="14" frameX="0" frameY="-8" frameWidth="32" frameHeight="32"/>
+    <SubTexture name="blob_bullet2" x="1007" y="1" width="29" height="19" frameX="-1" frameY="-3" frameWidth="32" frameHeight="32"/>
+    <SubTexture name="blob_bullet3" x="35" y="103" width="29" height="20" frameX="-1" frameY="-3" frameWidth="32" frameHeight="32"/>
+    <SubTexture name="boss1" x="394" y="85" width="96" height="32"/>
+    <SubTexture name="boss2" x="492" y="85" width="96" height="32"/>
+    <SubTexture name="boss_bullet1" x="1025" y="101" width="16" height="15" frameX="0" frameY="0" frameWidth="16" frameHeight="16"/>
+    <SubTexture name="boss_bullet2" x="738" y="108" width="16" height="16"/>
+    <SubTexture name="boss_bullet3" x="756" y="108" width="16" height="16"/>
+    <SubTexture name="bullet" x="975" y="110" width="14" height="13" frameX="-1" frameY="-1" frameWidth="16" frameHeight="16"/>
+    <SubTexture name="bullet_plasma" x="991" y="110" width="14" height="13" frameX="-1" frameY="-1" frameWidth="16" frameHeight="16"/>
+    <SubTexture name="bullet_rocket" x="975" y="110" width="14" height="13" frameX="-1" frameY="-1" frameWidth="16" frameHeight="16"/>
+    <SubTexture name="bullet_shotgun" x="1029" y="83" width="14" height="15" frameX="-2" frameY="0" frameWidth="16" frameHeight="16"/>
+    <SubTexture name="cloud" x="300" y="1" width="90" height="90" frameX="-19" frameY="-21" frameWidth="128" frameHeight="128"/>
+    <SubTexture name="cup" x="251" y="95" width="28" height="29" frameX="-3" frameY="-3" frameWidth="32" frameHeight="32"/>
+    <SubTexture name="cup_nooutline" x="298" y="95" width="26" height="27" frameX="-4" frameY="-4" frameWidth="32" frameHeight="32"/>
+    <SubTexture name="Doom slayer pixel1" x="692" y="74" width="21" height="38" frameX="-6" frameY="-5" frameWidth="32" frameHeight="48"/>
+    <SubTexture name="Doom slayer pixel2" x="715" y="74" width="21" height="38" frameX="-6" frameY="-5" frameWidth="32" frameHeight="48"/>
+    <SubTexture name="elon1" x="580" y="1" width="92" height="71" frameX="-10" frameY="0" frameWidth="128" frameHeight="71"/>
+    <SubTexture name="elon2" x="674" y="1" width="92" height="71" frameX="-10" frameY="0" frameWidth="128" frameHeight="71"/>
+    <SubTexture name="elon3" x="768" y="1" width="85" height="71" frameX="-14" frameY="0" frameWidth="128" frameHeight="71"/>
+    <SubTexture name="factory" x="392" y="1" width="104" height="82" frameX="-5" frameY="-29" frameWidth="128" frameHeight="128"/>
+    <SubTexture name="gradient_linear" x="360" y="120" width="256" height="4"/>
+    <SubTexture name="ground1" x="774" y="108" width="16" height="16"/>
+    <SubTexture name="hammer" x="975" y="60" width="15" height="12" frameX="-1" frameY="-3" frameWidth="17" frameHeight="17"/>
+    <SubTexture name="hardWall1" x="792" y="108" width="16" height="16"/>
+    <SubTexture name="hardWall2" x="792" y="108" width="16" height="16"/>
+    <SubTexture name="imp1" x="591" y="74" width="22" height="42" frameX="-5" frameY="-6" frameWidth="32" frameHeight="48"/>
+    <SubTexture name="imp2" x="667" y="74" width="23" height="40" frameX="-4" frameY="-7" frameWidth="32" frameHeight="48"/>
+    <SubTexture name="lone_9" x="580" y="74" width="9" height="9"/>
+    <SubTexture name="lone_16" x="810" y="108" width="16" height="16"/>
+    <SubTexture name="lone_16s" x="828" y="108" width="16" height="16"/>
+    <SubTexture name="partBloodA" x="952" y="1" width="21" height="23" frameX="-2" frameY="-1" frameWidth="25" frameHeight="25"/>
+    <SubTexture name="partCircle" x="738" y="74" width="32" height="32"/>
+    <SubTexture name="partCircleB" x="772" y="74" width="32" height="32"/>
+    <SubTexture name="partCircleContrast" x="806" y="74" width="32" height="32"/>
+    <SubTexture name="partCircleSmall" x="846" y="108" width="16" height="16"/>
+    <SubTexture name="partDisc1" x="882" y="64" width="55" height="55" frameX="-5" frameY="-6" frameWidth="64" frameHeight="64"/>
+    <SubTexture name="partDisc2" x="855" y="1" width="61" height="61" frameX="-2" frameY="-3" frameWidth="64" frameHeight="64"/>
+    <SubTexture name="partGlow" x="864" y="108" width="16" height="16"/>
+    <SubTexture name="partSmoke" x="498" y="1" width="80" height="80"/>
+    <SubTexture name="partSmokeA" x="204" y="1" width="94" height="92" frameX="-3" frameY="-5" frameWidth="100" frameHeight="100"/>
+    <SubTexture name="partSmokeB" x="1" y="1" width="100" height="100"/>
+    <SubTexture name="partSmokeC" x="103" y="1" width="99" height="99" frameX="0" frameY="-1" frameWidth="100" frameHeight="100"/>
+    <SubTexture name="partSmokeSmallA" x="618" y="74" width="47" height="50" frameX="-3" frameY="0" frameWidth="50" frameHeight="50"/>
+    <SubTexture name="partSphere" x="840" y="74" width="32" height="32"/>
+    <SubTexture name="partSplatterA" x="918" y="1" width="32" height="32"/>
+    <SubTexture name="partSplatterB" x="326" y="93" width="32" height="31" frameX="0" frameY="-1" frameWidth="32" frameHeight="32"/>
+    <SubTexture name="pixel" x="204" y="95" width="4" height="4"/>
+    <SubTexture name="pixel_cross" x="210" y="95" width="3" height="3"/>
+    <SubTexture name="pixel_transp" x="215" y="95" width="3" height="3" frameX="0" frameY="0" frameWidth="4" frameHeight="4"/>
+    <SubTexture name="player" x="281" y="95" width="15" height="28" frameX="0" frameY="-2" frameWidth="16" frameHeight="32"/>
+    <SubTexture name="ui_xbox_a" x="66" y="103" width="20" height="20"/>
+    <SubTexture name="ui_xbox_b" x="88" y="103" width="20" height="20"/>
+    <SubTexture name="ui_xbox_ddown" x="110" y="102" width="20" height="20"/>
+    <SubTexture name="ui_xbox_dleft" x="132" y="102" width="20" height="20"/>
+    <SubTexture name="ui_xbox_down" x="110" y="102" width="20" height="20"/>
+    <SubTexture name="ui_xbox_dright" x="154" y="102" width="20" height="20"/>
+    <SubTexture name="ui_xbox_dup" x="176" y="102" width="20" height="20"/>
+    <SubTexture name="ui_xbox_lb" x="975" y="17" width="27" height="19"/>
+    <SubTexture name="ui_xbox_left" x="132" y="102" width="20" height="20"/>
+    <SubTexture name="ui_xbox_lt" x="360" y="93" width="32" height="25"/>
+    <SubTexture name="ui_xbox_rb" x="1004" y="22" width="27" height="19"/>
+    <SubTexture name="ui_xbox_right" x="154" y="102" width="20" height="20"/>
+    <SubTexture name="ui_xbox_rt" x="918" y="35" width="32" height="25"/>
+    <SubTexture name="ui_xbox_share" x="198" y="102" width="20" height="20"/>
+    <SubTexture name="ui_xbox_start" x="970" y="38" width="20" height="20"/>
+    <SubTexture name="ui_xbox_up" x="176" y="102" width="20" height="20"/>
+    <SubTexture name="ui_xbox_x" x="992" y="43" width="20" height="20"/>
+    <SubTexture name="ui_xbox_xbox" x="220" y="95" width="29" height="29" frameX="-1" frameY="-1" frameWidth="30" frameHeight="30"/>
+    <SubTexture name="ui_xbox_y" x="1014" y="43" width="20" height="20"/>
+    <SubTexture name="wall1" x="975" y="74" width="16" height="16"/>
+    <SubTexture name="wall2" x="975" y="92" width="16" height="16"/>
+    <SubTexture name="wall3" x="1007" y="65" width="16" height="16"/>
+    <SubTexture name="wall4" x="1025" y="65" width="16" height="16"/>
+    <SubTexture name="wall5" x="993" y="83" width="16" height="16"/>
+    <SubTexture name="wall6" x="1007" y="101" width="16" height="16"/>
+    <SubTexture name="wall7" x="1011" y="83" width="16" height="16"/>
 </TextureAtlas>

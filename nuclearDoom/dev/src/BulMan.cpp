@@ -124,6 +124,9 @@ void BulMan::addBullet(Bullet b){
 	ab->setPos(b.x, b.y);
 	if (b.flags & RandRotation)
 		ab->rotation = rd::Rand::get().angle();
+	if (b.flags & AlignedRotation) {
+		ab->rotation = atan2(b.dy, b.dx);
+	}
 	nbActive++;
 }
 

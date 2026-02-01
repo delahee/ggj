@@ -22,6 +22,7 @@
 using namespace rd;
 using namespace std::string_literals;
 
+Game* Game::me = 0;
 void Game::onFrag(){
 	frags++;
 
@@ -45,10 +46,6 @@ bool Game::isWallGrid(int cx, int cy){
 
 
 void Game::explode(int atX, int atY, ProjData* proj) {
-	if (!proj)return;
-	if (proj->name != "rocket")
-		return;
-
 	auto& rnd = rd::Rand::get();
 	for (int i = 0; i < 6; ++i) {
 		auto gfx = r2::Graphics::fromPool(root);
@@ -87,7 +84,8 @@ void Game::hitWallPix(float px, float py, ProjData*proj){
 	}
 
 	bloodsplash(px, py);
-	explode(px, py,proj);
+	if (proj->name == "rocket") 
+		explode(px, py,proj);
 }
 
 void Game::bloodsplash(int px, int py){
@@ -138,6 +136,9 @@ void Game::dispose(){
 	Super::dispose();
 }
 void Game::endscreen(){
+	auto rnd = rd::Rand::get();
+	for (int i = 0; i < 50; ++i)
+		explode(rnd.dice(400, 600), rnd.dice(400, 600),0);
 	rs::Timer::delay([=]() {
 		auto app = App_GameState::me;
 		auto sc = root->getScene();
@@ -149,10 +150,12 @@ void Game::endscreen(){
 		txt->centered();
 		txt->x = Cst::W * 0.5f;
 		txt->y = Cst::H * 0.5f;
+
+		txt->alpha = 0;//gfx->alpha = 0;
+		tw.create(txt, rs::TVar::VAlpha,1.0);
 	});
 	//delete this;
 }
-
 
 static bool defeated = false;
 void Game::defeat(){
@@ -191,6 +194,7 @@ Game::Game(r2::Node* _root, r2::Scene* sc, rd::AgentList* parent) : Super(parent
 	scRoot = _root;
 	root = new r2::StaticBox(r2::Bounds::fromTLWH(0, 0, Cst::W, Cst::H), scRoot);
 
+	me = this;
 	Data::init();
 
 	rd::AudioMan::get().init();
@@ -246,6 +250,8 @@ void Game::freezeFrame(float dur ){
 void Game::update(double dt) {
 	Super::update(dt);
 
+	tw.update(dt);
+
 	if (!enabled)
 		return;
 
@@ -295,7 +301,6 @@ void Game::update(double dt) {
 	
 
 	al.update(dt);
-	tw.update(dt);
 #ifdef PASTA_DEBUG
 	im();	
 #endif

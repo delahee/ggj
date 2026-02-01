@@ -44,6 +44,9 @@ void Data::init(){
 		d->name = "player";
 		d->sprName = "Doom slayer pixel";
 		d->tags.push_back("player");
+#ifdef _DEBUG
+		d->hp = 5000;
+#endif
 		entities[d->name] = d;
 	}
 	{
@@ -62,13 +65,31 @@ void Data::init(){
 		auto d = new EntityData();
 		d->name = "boss";
 		d->tags.push_back("nmy");
-		d->hp += 300;
+		d->hp += 50;
 		entities[d->name] = d;
 	}
 
 	{
 		auto d = new ProjData();
 		d->name = "imp_bullet";
+		d->tags.push_back("nmy");
+		d->dmg = 3;
+		projs[d->name] = d;
+	}
+
+	{
+		auto d = new ProjData();
+		d->name = "blob_bullet";
+		d->sprName = "blob_bullet";
+		d->tags.push_back("nmy");
+		d->flags |= BulMan::AlignedRotation;
+		d->dmg = 3;
+		projs[d->name] = d;
+	}
+	{
+		auto d = new ProjData();
+		d->name = "boss_bullet";
+		d->sprName = "boss_bullet";
 		d->tags.push_back("nmy");
 		d->dmg = 3;
 		projs[d->name] = d;

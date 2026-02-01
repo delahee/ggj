@@ -23,6 +23,8 @@ public:
 	r2::Node*		root = 0;
 	rd::AgentList	al;
 
+	static Game*			me;
+
 	Map*			map{};
 	UI*				ui{};
 	BulMan*			bulMan{};

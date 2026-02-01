@@ -175,6 +175,8 @@
         <map type="IndividualSpriteSettingsMap">
             <key type="filename">Doom slayer pixel1.png</key>
             <key type="filename">Doom slayer pixel2.png</key>
+            <key type="filename">imp1.png</key>
+            <key type="filename">imp2.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
                 <point_f>0.5,0.5</point_f>
@@ -206,15 +208,11 @@
             </struct>
             <key type="filename">bike_park-export.png</key>
             <key type="filename">bike_park.png</key>
+            <key type="filename">blob_bullet1.png</key>
+            <key type="filename">blob_bullet2.png</key>
+            <key type="filename">blob_bullet3.png</key>
             <key type="filename">cup.png</key>
             <key type="filename">cup_nooutline.png</key>
-            <key type="filename">kiwi1.png</key>
-            <key type="filename">kiwi2.png</key>
-            <key type="filename">kiwi3.png</key>
-            <key type="filename">kiwi4.png</key>
-            <key type="filename">kiwi5.png</key>
-            <key type="filename">kiwi6.png</key>
-            <key type="filename">kiwifruit.png</key>
             <key type="filename">partCircle.png</key>
             <key type="filename">partCircleB.png</key>
             <key type="filename">partCircleContrast.png</key>
@@ -236,13 +234,12 @@
                 <false/>
             </struct>
             <key type="filename">blob.png</key>
-            <key type="filename">blob_underscor_attack1.png</key>
-            <key type="filename">blob_underscor_attack2.png</key>
-            <key type="filename">blob_underscor_attack3.png</key>
-            <key type="filename">blob_underscor_attack4.png</key>
-            <key type="filename">blob_underscor_attack5.png</key>
-            <key type="filename">blob_underscor_attack6.png</key>
-            <key type="filename">imp.png</key>
+            <key type="filename">blob_attack1.png</key>
+            <key type="filename">blob_attack2.png</key>
+            <key type="filename">blob_attack3.png</key>
+            <key type="filename">blob_attack4.png</key>
+            <key type="filename">blob_attack5.png</key>
+            <key type="filename">blob_attack6.png</key>
             <key type="filename">player.png</key>
             <struct type="IndividualSpriteSettings">
                 <key>pivotPoint</key>
@@ -258,12 +255,30 @@
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
-            <key type="filename">boss shoot1.png</key>
-            <key type="filename">boss shoot2.png</key>
-            <key type="filename">boss shoot3.png</key>
+            <key type="filename">boss1.png</key>
+            <key type="filename">boss2.png</key>
+            <struct type="IndividualSpriteSettings">
+                <key>pivotPoint</key>
+                <point_f>0.5,0.5</point_f>
+                <key>spriteScale</key>
+                <double>1</double>
+                <key>scale9Enabled</key>
+                <false/>
+                <key>scale9Borders</key>
+                <rect>24,8,48,16</rect>
+                <key>scale9Paddings</key>
+                <rect>24,8,48,16</rect>
+                <key>scale9FromFile</key>
+                <false/>
+            </struct>
+            <key type="filename">boss_bullet1.png</key>
+            <key type="filename">boss_bullet2.png</key>
+            <key type="filename">boss_bullet3.png</key>
             <key type="filename">bullet.png</key>
             <key type="filename">bullet_plasma.png</key>
+            <key type="filename">bullet_rocket.png</key>
             <key type="filename">bullet_shotgun.png</key>
+            <key type="filename">ground1.png</key>
             <key type="filename">hardWall1.png</key>
             <key type="filename">hardWall2.png</key>
             <key type="filename">lone_16.png</key>
@@ -288,25 +303,6 @@
                 <rect>4,4,8,8</rect>
                 <key>scale9Paddings</key>
                 <rect>4,4,8,8</rect>
-                <key>scale9FromFile</key>
-                <false/>
-            </struct>
-            <key type="filename">car1.png</key>
-            <key type="filename">car2.png</key>
-            <key type="filename">car3.png</key>
-            <key type="filename">car4.png</key>
-            <key type="filename">car5.png</key>
-            <struct type="IndividualSpriteSettings">
-                <key>pivotPoint</key>
-                <point_f>0.5,0.5</point_f>
-                <key>spriteScale</key>
-                <double>1</double>
-                <key>scale9Enabled</key>
-                <false/>
-                <key>scale9Borders</key>
-                <rect>3,3,6,6</rect>
-                <key>scale9Paddings</key>
-                <rect>3,3,6,6</rect>
                 <key>scale9FromFile</key>
                 <false/>
             </struct>
@@ -370,21 +366,6 @@
                 <rect>4,4,9,9</rect>
                 <key>scale9Paddings</key>
                 <rect>4,4,9,9</rect>
-                <key>scale9FromFile</key>
-                <false/>
-            </struct>
-            <key type="filename">kiwi_head.png</key>
-            <struct type="IndividualSpriteSettings">
-                <key>pivotPoint</key>
-                <point_f>0.5,0.5</point_f>
-                <key>spriteScale</key>
-                <double>1</double>
-                <key>scale9Enabled</key>
-                <false/>
-                <key>scale9Borders</key>
-                <rect>4,3,8,5</rect>
-                <key>scale9Paddings</key>
-                <rect>4,3,8,5</rect>
                 <key>scale9FromFile</key>
                 <false/>
             </struct>

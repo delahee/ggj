@@ -32,6 +32,7 @@ public:
 	enum Flags : s16{
 		Alive = 1<<0,
 		RandRotation=1<<1,
+		AlignedRotation=1<<2,
 	};
 
 	int								nbActive = 0;

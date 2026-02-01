@@ -117,7 +117,7 @@ void Entity::fire(int toX, int toY, ProjData * proj) {
 }
 
 void Entity::onDeath(){
-	blinking = 0.5f;
+	blinking = 0.5f;	
 
 	if (!data->isPlayer()) {
 		vec2 dist = game->player->getPos() - getPos();
@@ -126,6 +126,19 @@ void Entity::onDeath(){
 		game->screenshake(0.1f, dist.x, dist.y);
 	}
 	game->freezeFrame(0.05f);
+
+	if( data->name=="boss"){
+		game->explode(x, y,0);
+		rs::Timer::delay(500,[]() {
+			Game::me->endscreen();
+		});
+	}
+	if (data->name == "player") {
+		game->explode(x, y, 0);
+		rs::Timer::delay(500, []() {
+			Game::me->endscreen();
+		});
+	}
 }
 
 bool Entity::isDead(){
@@ -154,10 +167,12 @@ void Entity::updateHits(){
 
 		bloodSplash(bulx,buly);
 
-		game->explode(bulx, buly, game->bulMan->proj[result]);
+		auto proj = game->bulMan->proj[result];
+		if (proj->name == "rocket")
+			game->explode(bulx, buly, proj);
 
 		hit(dmg, 0);
-
+		 
 		game->bulMan->destroy(result);
 	}
 }
@@ -188,7 +203,7 @@ bool Entity::isActivated()
 	if (data->isPlayer())
 		return true;
 
-	return (getPixelPos() - game->player->getPixelPos()).getNorm() < 800;
+	return ( (getPixelPos() - game->player->getPixelPos()).getNorm()) < 500;
 }
 
 void Entity::im(){
@@ -275,14 +290,35 @@ void Entity::update(double dt) {
 		}
 		updateHits();
 	}
+
+	auto& rnd = rd::Rand::get();
+		
+	if (!isDead() && isActivated() && data->isNmy()) {
+		if( rnd.pc(0.4f)){
+			auto player = game->player;
+			if (data->name == "imp") {
+				auto proj = Data::projs["imp_bullet"];
+				fire(player->getPos().x, player->getPos().y, proj);
+			}
+			if (data->name == "blob") {
+				auto proj = Data::projs["blob_bullet"];
+				fire(player->getPos().x, player->getPos().y, proj);
+			}
+			if (data->name == "boss") {
+				auto proj = Data::projs["boss_bullet"];
+				fire(player->getPos().x, player->getPos().y, proj);
+			}
+		}
+	}
 	al.update(dt);
 
 	syncPos();
 
 	if (fadingOut) {
-		spr->alpha -= 0.01f;
-		if (spr->alpha < 0)
-			rd::Garbage::trash(this);
+		spr->alpha -= 0.0f;
+		if (spr->alpha < 0) {
+			detach();
+		}
 	}
 
 	if(blinking>0){
@@ -318,6 +354,7 @@ void Entity::setPixelPos(const Vector2& pos) {
 
 	rx = 1.0f * (x - cx * Cst::GRID) / Cst::GRID;
 	ry = 1.0f * (y - cy * Cst::GRID) / Cst::GRID;
+	trsDirty = true;
 }
 
 Vector2 Entity::getPixelPos(){
@@ -400,7 +437,8 @@ void Entity::hit(int dmg, EntityData* by) {
 			game->onFrag();
 		}
 		if (by == nullptr) {
-			rd::Garbage::trash(this);
+			//rd::Garbage::trash(this);
+			detach();
 		}
 		else {
 			fadingOut = true;
