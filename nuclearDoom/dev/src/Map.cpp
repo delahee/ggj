@@ -85,6 +85,10 @@ Map::Map(r2::Node* parent):r2::Node(parent){
 				std::string coo = std::to_string(x) + "_" + std::to_string(y);
 				b->vars.setTag(coo.c_str());
 			}
+			else if (col24 == 0xff7f00) {
+				genGround(x, y);
+				bossList.push_back({ x,y });
+			}
 			else
 				trace("unexpected at " + std::to_string(x) + std::to_string(y));
 		}

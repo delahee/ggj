@@ -59,14 +59,16 @@ void Entity::fire(int x, int y) {
 
 void Entity::muzzle(int toX, int toY, ProjData* proj) {
 	auto ppos = getPixelPos();
-
 	auto gfx = r2::Graphics::fromPool(parent);
 
 	vec2 dir = vec2( toX - ppos.x, toY - ppos.y);
 	dir = dir.getNormalizedSafeZero();
 	dir *= 8;
 
-	gfx->color = r::Color::Yellow;
+	if( proj && proj->name=="plasma")
+		gfx->color = r::Color::Blue;
+	else 
+		gfx->color = r::Color::Yellow;
 	gfx->drawDisc(0.0f, 0.0f, 8);
 	gfx->x = x + dir.x; 
 	gfx->y = y + dir.y; 
@@ -93,8 +95,10 @@ void Entity::fire(int toX, int toY, ProjData * proj) {
 	Bullet b;
 	b.x = ppos.x;
 	b.y = ppos.y;
+	b.dmg = proj->dmg;
 	b.sprName = proj->sprName;
 	b.flags = proj->flags;
+	b.proj = proj;
 
 	float speed = proj->speed;
 
@@ -150,7 +154,9 @@ void Entity::updateHits(){
 
 		bloodSplash(bulx,buly);
 
-		hit(result, 0);
+		game->explode(bulx, buly, game->bulMan->proj[result]);
+
+		hit(dmg, 0);
 
 		game->bulMan->destroy(result);
 	}

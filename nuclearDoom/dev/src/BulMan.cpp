@@ -14,7 +14,7 @@ BulMan::BulMan(Game *g, rd::AgentList* al) : rd::Agent(al){
 	frictX.reserve(future);
 	frictY.reserve(future);
 	life.reserve(future);
-	bhv.reserve(future);
+	proj.reserve(future);
 	spr.reserve(future);
 
 	rdr = new r2::Batch(g->root);
@@ -64,9 +64,10 @@ void BulMan::update(double _dt) {
 	for (int idx = sz - 1; idx >= 0; --idx) {
 		auto& vx = x[idx];
 		auto& vy = y[idx];
+		auto& vproj = proj[idx];
 
 		if( game->isWallPix(vx,vy)){
-			game->hitWallPix(vx,vy);
+			game->hitWallPix(vx,vy, vproj);
 
 			swap(idx, nbActive - 1);
 			onInactive(nbActive - 1);
@@ -98,10 +99,10 @@ void BulMan::addBullet(Bullet b){
 	frictX.resize(res);
 	frictY.resize(res);
 	life.resize(res);
-	bhv.resize(res);
 	spr.resize(res);
 	fam.resize(res);
 	dmg.resize(res);
+	proj.resize(res);
 
 	int idx = nbActive;
 	x[idx] = b.x;
@@ -113,6 +114,7 @@ void BulMan::addBullet(Bullet b){
 	frictY[idx] = b.fricty;
 	fam[idx] = b.fam;
 	dmg[idx] = b.dmg;
+	proj[idx] = b.proj;
 	
 	auto ab = spr[idx] = rd::ABatchElem::fromPool(b.sprName.c_str(), Data::assets, rdr);
 	if (!ab) return;
@@ -125,8 +127,7 @@ void BulMan::addBullet(Bullet b){
 	nbActive++;
 }
 
-int BulMan::getBulletDmg(int idx)
-{
+int BulMan::getBulletDmg(int idx){
 	if (idx < 0)
 		return 0;
 	return dmg[idx];
@@ -176,8 +177,8 @@ void BulMan::im(int idx) {
 	Value("frictY", frictY[idx]);
 	Value("spr", spr[idx]);
 	Value("fam", (int)fam[idx]);
-	Value("bhv", (int)bhv[idx]);
 	Value("flags", (int)flags[idx]);
+	Value("proj", (int)proj[idx]);
 }
 
 void BulMan::swap(int idxA, int idxB){
@@ -193,6 +194,6 @@ void BulMan::swap(int idxA, int idxB){
 	std::swap(spr[idxA]		, spr[idxB]);
 	std::swap(dmg[idxA]		, dmg[idxB]);
 	std::swap(fam[idxA]		, fam[idxB]);
-	std::swap(bhv[idxA]		, bhv[idxB]);
 	std::swap(flags[idxA]	, flags[idxB]);
+	std::swap(proj[idxA]	, proj[idxB]);
 }

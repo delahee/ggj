@@ -11,6 +11,7 @@ public:
 
 	std::vector<vec2i>	impList;
 	std::vector<vec2i>	blobList;
+	std::vector<vec2i>	bossList;
 
 						Map(r2::Node* parent);
 

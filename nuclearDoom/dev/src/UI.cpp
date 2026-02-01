@@ -22,18 +22,24 @@ void UI::update(double dt){
 		fl->vertical();
 		fl->x = 32;
 
+		int fontSize = 12;
 		hp = r2::Text::fromPool(nullptr,"HP:", fl);
 		hp->setFontSize(16);
 		hp->addOutline(r::Color::Black);
-		hp->setTextColor(r::Color::Red);
+		hp->setTextColor(r::Color::Green);
 
 		auto t0 = r2::Text::fromPool(nullptr, "#1 - Shotgun", fl);
-		t0->setFontSize(16);
+		t0->setFontSize(fontSize);
 		t0->addOutline(r::Color::Black);
 		t0->setTextColor(r::Color::Red);
 
 		t0 = r2::Text::fromPool(nullptr, "#2 - Plasma Rifle", fl);
-		t0->setFontSize(16);
+		t0->setFontSize(fontSize);
+		t0->addOutline(r::Color::Black);
+		t0->setTextColor(r::Color::Red);
+
+		t0 = r2::Text::fromPool(nullptr, "ZQSD move - Left Click fire", fl);
+		t0->setFontSize(fontSize);
 		t0->addOutline(r::Color::Black);
 		t0->setTextColor(r::Color::Red);
 

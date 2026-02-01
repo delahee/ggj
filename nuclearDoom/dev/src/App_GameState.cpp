@@ -13,12 +13,12 @@ App_GameState* App_GameState::me = 0;
 
 static void updateTools();
 
-static void bootGame(r2::Node * root) {
+void App_GameState::bootGame(r2::Node * root) {
 	auto app = App_GameState::me;
 	auto sc = app->mainScene;
 
 	new Game(root,sc,&sc->al);
-	new AnonAgent( updateTools, &sc->al);
+	//new AnonAgent( updateTools, &sc->al);
 
 #ifdef PASTA_DEBUG
 	r2::im::HierarchyExplorer::toggle(App_GameState::me->mainScene);

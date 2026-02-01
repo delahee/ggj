@@ -23,12 +23,20 @@ void Player::controlsMove(vec2 move, double dt) {
 
 void Player::controls(double dt){
 	vec2 move;
-	if (rs::Input::isPressed(Pasta::Key::KB_Q)) {
+	if (rs::Input::isKeyboardKeyDown(Pasta::Key::KB_Q)) {
 		move += { -1, 0 };
 	}
-	if (rs::Input::isPressed(Pasta::Key::KB_Z)) {
+	else if (rs::Input::isKeyboardKeyDown(Pasta::Key::KB_A)) {
+		move += { -1, 0 };
+	}
+	
+	if (rs::Input::isKeyboardKeyDown(Pasta::Key::KB_Z)) {
 		move+={ 0,-1 };
 	}
+	else if (rs::Input::isKeyboardKeyDown(Pasta::Key::KB_W)) {
+		move += { 0, -1 };
+	}
+
 	if (rs::Input::isPressed(Pasta::Key::KB_S)) {
 		move+={ 0,1 };
 	}
@@ -71,9 +79,17 @@ void Player::controls(double dt){
 			auto mousePos = game->getGameMousePos();
 			fire(mousePos.x, mousePos.y);
 		}
+		if (rs::Input::isKeyboardKeyJustPressed(Pasta::Key::KB_SPACE)) {
+			auto mousePos = game->getGameMousePos();
+			fire(mousePos.x, mousePos.y);
+		}
 	}
 	else {
 		if (rs::Input::isMousePressed(Pasta::Key::MOUSE_LEFT)) {
+			auto mousePos = game->getGameMousePos();
+			fire(mousePos.x, mousePos.y);
+		}
+		if(rs::Input::isKeyboardKeyDown(Pasta::Key::KB_SPACE)) {
 			auto mousePos = game->getGameMousePos();
 			fire(mousePos.x, mousePos.y);
 		}

@@ -9,17 +9,18 @@ enum class Family{
 };
 
 struct Bullet{
-	float	x = 0;
-	float	y = 0;
-	float	dx = 0;
-	float	dy = 0;
-	float	frictx = 0.99f;
-	float	fricty = 0.99f;
-	float	life = 120.0f;
-	int		dmg = 1;
-	int		flags = 0;
-	Str		sprName;
-	Family  fam = Family::Unknown;
+	float		x = 0;
+	float		y = 0;
+	float		dx = 0;
+	float		dy = 0;
+	float		frictx = 0.99f;
+	float		fricty = 0.99f;
+	float		life = 120.0f;
+	int			dmg = 1;
+	int			flags = 0;
+	Str			sprName;
+	Family		fam = Family::Unknown;
+	ProjData*	proj = 0;
 };
 
 class BulMan : public rd::Agent {
@@ -44,8 +45,8 @@ public:
 	std::vector<float>				life;
 	std::vector<int>				dmg;
 	std::vector<Family>				fam;
-	std::vector<Behavior>			bhv;
 	std::vector<rd::ABatchElem*>	spr;
+	std::vector<ProjData*>			proj;
 
 	Game *							game = 0;		
 	r2::Batch*						rdr = 0;

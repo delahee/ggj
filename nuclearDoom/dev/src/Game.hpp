@@ -34,9 +34,12 @@ public:
 	Path*			path=0;
 	int				frags = 0;
 	rd::Tweener		tw;
+	bool			enabled = true;
 
 	vec2			getGameMousePos();
 
+					virtual ~Game();
+	virtual void	dispose() override;
 	void			intro();
 	void			sfx(const char* name);
 	void			beginGame();
@@ -54,12 +57,16 @@ public:
 
 	bool			isWallPix(float px, float py);
 	bool			isWallGrid(int cx, int cy);
-	void			hitWallPix(float px, float py);
+	//void			hitWallPix(float px, float py);
+	void			explode(int toX, int toY, ProjData* proj);
+	void			hitWallPix(float px, float py, ProjData* proj);
 	void			bloodsplash(int px, int py);
 
 	void			freezeFrame(float dur);
 	void			screenshake(float dur, float dx, float dy);
 	bool			isShaking() { return shakeDur > 0.0f; };
+
+	void			endscreen();
 protected:
 	float			freezeDur = -1.0f;
 	float			shakeDur = -1.0f;

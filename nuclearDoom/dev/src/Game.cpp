@@ -2,7 +2,7 @@
 
 #include <unordered_map>
 #include <EASTL/variant.h>
-#include "../../../skd/dev/src/App_GameState.h"
+#include "App_GameState.h"
 
 #include "r2/Node.hpp"
 #include "rd/ABitmap.hpp"
@@ -43,7 +43,35 @@ bool Game::isWallGrid(int cx, int cy){
 	return false;
 }
 
-void Game::hitWallPix(float px, float py){
+
+void Game::explode(int atX, int atY, ProjData* proj) {
+	if (!proj)return;
+	if (proj->name != "rocket")
+		return;
+
+	auto& rnd = rd::Rand::get();
+	for (int i = 0; i < 6; ++i) {
+		auto gfx = r2::Graphics::fromPool(root);
+		if (rnd.pc(50))
+			gfx->color = r::Color::Yellow;
+		else
+			gfx->color = r::Color::Black;
+		gfx->drawDisc(0.0f, 0.0f, 8);
+		gfx->x = atX + rnd.dice(-16, 16);
+		gfx->y = atY + rnd.dice(-16, 16);
+		gfx->setUniformScale(rnd.fuzz(1.2, 0.5));
+		gfx->trsDirty = true;
+
+		if (rnd.pc(50))
+			rs::Timer::delay(50, [=] { gfx->color = r::Color::White; });
+		if (rnd.pc(50))
+			rs::Timer::delay(100, [=] { gfx->color = r::Color::Black; });
+		rs::Timer::delay(150, [=] { gfx->destroy(); });
+	}
+}
+
+
+void Game::hitWallPix(float px, float py, ProjData*proj){
 	int cx = px / Cst::GRID;
 	int cy = py / Cst::GRID;
 	map->softWalls.set(cx, cy, 0);
@@ -59,6 +87,7 @@ void Game::hitWallPix(float px, float py){
 	}
 
 	bloodsplash(px, py);
+	explode(px, py,proj);
 }
 
 void Game::bloodsplash(int px, int py){
@@ -92,6 +121,36 @@ void Game::screenshake(float dur, float dx, float dy){
 	shakeY = dy;
 	ocamX = sc->cameraPos.x;
 	ocamY = sc->cameraPos.y;
+}
+
+Game::~Game()
+{
+	if (ui) {
+		ui->destroy();
+		ui = 0;
+	}
+	dispose();
+}
+
+void Game::dispose(){
+	scRoot->destroyAllChildren();
+	
+	Super::dispose();
+}
+void Game::endscreen(){
+	rs::Timer::delay([=]() {
+		auto app = App_GameState::me;
+		auto sc = root->getScene();
+		auto gfx = r2::Graphics::rect(-200, -200, 4000, 4000,0x0,1.0f,root);
+		auto txt = r2::Text::fromPool(nullptr,"The end", root);
+		enabled = false;
+		sc->setPan(0,0);
+		sc->syncViewMatrix();
+		txt->centered();
+		txt->x = Cst::W * 0.5f;
+		txt->y = Cst::H * 0.5f;
+	});
+	//delete this;
 }
 
 
@@ -168,6 +227,12 @@ Game::Game(r2::Node* _root, r2::Scene* sc, rd::AgentList* parent) : Super(parent
 		e->setGridPos(pos.x, pos.y);
 		nmies.push_back(e);
 	}
+	for (auto pos : map->bossList) {
+		auto e = new Entity(this, root);
+		e->init("boss");
+		e->setGridPos(pos.x, pos.y);
+		nmies.push_back(e);
+	}
 
 	ui->toFront();
 }
@@ -180,6 +245,9 @@ void Game::freezeFrame(float dur ){
 
 void Game::update(double dt) {
 	Super::update(dt);
+
+	if (!enabled)
+		return;
 
 	float nbFr = dt / (1.0 / 60.0);
 	auto sc = scRoot->getScene();
@@ -208,14 +276,23 @@ void Game::update(double dt) {
 
 	controls(dt);
 
-	//regular pan
-	bool isCameraTweened = tw.exists(sc, (rs::TVar)r2::Scene::VCamPosX);
-	if( !wasShaking && ! isShaking() && !isCameraTweened){
-		float destX = (player->getPos().x ) - scRoot->x * sc->getZoomX();
-		float destY = (player->getPos().y ) - scRoot->y * sc->getZoomX();
-		sc->cameraPos.x = r::Math::lerp(sc->cameraPos.x, destX, pow(0.8f,nbFr));
-		sc->cameraPos.y = r::Math::lerp(sc->cameraPos.y, destY, pow(0.8f,nbFr));
+	if (rs::Input::isJustPressed(Pasta::Key::KB_R)) {
+		endscreen();
+		return;
 	}
+
+	//regular pan
+
+#if 1
+	bool isCameraTweened = tw.exists(sc, (rs::TVar)r2::Scene::VCamPosX);
+	if (!wasShaking && !isShaking() && !isCameraTweened) {
+		float destX = (player->getPos().x) - scRoot->x * sc->getZoomX();
+		float destY = (player->getPos().y) - scRoot->y * sc->getZoomX();
+		sc->cameraPos.x = r::Math::lerp(sc->cameraPos.x, destX, pow(0.8f, nbFr));
+		sc->cameraPos.y = r::Math::lerp(sc->cameraPos.y, destY, pow(0.8f, nbFr));
+	}
+#endif
+	
 
 	al.update(dt);
 	tw.update(dt);
@@ -223,46 +300,6 @@ void Game::update(double dt) {
 	im();	
 #endif
 }
-/*
-template <> void Pasta::JReflect::visit(std::vector<Vector2> & v, const char* name) {
-	u32 arrSize = v.size()*2;
-	if (visitArrayBegin(name, arrSize)) {
-		if (isReadMode())
-			if (v.size() < arrSize >> 1)
-				v.resize(arrSize >> 1);
-		for (u32 i = 0; i < arrSize; ++i) {
-			visitIndexBegin(i);
-			Vector2& vf = v[i>>1];
-			if( 0==(i & 1) )
-				visit(vf.x, nullptr);
-			else
-				visit(vf.y, nullptr);
-			visitIndexEnd();
-		}
-	}
-	visitArrayEnd(name);
-}
-
-static void visitEastl(Pasta::JReflect&jr,eastl::vector<Vector2>& v, const char* name) {
-	u32 arrSize = v.size() * 2;
-	if (jr.visitArrayBegin(name, arrSize)) {
-		if (jr.isReadMode())
-			if( v.size() < arrSize >>1)
-				v.resize(arrSize >> 1);
-		for (u32 i = 0; i < arrSize; ++i) {
-			jr.visitIndexBegin(i);
-			Vector2& vf = v[i >> 1];
-			if (0 == (i & 1))
-				jr.visit(vf.x, nullptr);
-			else
-				jr.visit(vf.y, nullptr);
-			jr.visitIndexEnd();
-		}
-	}
-	jr.visitArrayEnd(name);
-}
-*/
-
 
 bool Game::im(){
 	using namespace ImGui;

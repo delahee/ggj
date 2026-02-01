@@ -26,4 +26,5 @@ public:
 	void			testUnit();
 
 	r2::Scene *		mainScene = nullptr;
+	void			bootGame(r2::Node* root);
 };

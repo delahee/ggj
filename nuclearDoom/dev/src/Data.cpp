@@ -58,6 +58,13 @@ void Data::init(){
 		d->tags.push_back("kiwi");
 		entities[d->name] = d;
 	}
+	{
+		auto d = new EntityData();
+		d->name = "boss";
+		d->tags.push_back("nmy");
+		d->hp += 300;
+		entities[d->name] = d;
+	}
 
 	{
 		auto d = new ProjData();
@@ -89,6 +96,16 @@ void Data::init(){
 		d->tags.push_back("player");
 		d->dmg = 1;
 		d->speed *= 2;
+		projs[d->name] = d;
+	}
+	{
+		auto d = new ProjData();
+		d->name = "rocket";
+		d->sprName = "bullet_rocket";
+
+		d->tags.push_back("player");
+		d->dmg = 30;
+		d->speed *= 0.5;
 		projs[d->name] = d;
 	}
 
