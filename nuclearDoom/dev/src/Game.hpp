@@ -55,5 +55,6 @@ public:
 	bool			isWallPix(float px, float py);
 	bool			isWallGrid(int cx, int cy);
 	void			hitWallPix(float px, float py);
+	void			bloodsplash(int px, int py);
 };
 

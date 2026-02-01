@@ -9,6 +9,9 @@ public:
 	ldtk::IntGrid		softWalls;
 	vec2i				playerSpawn;
 
+	std::vector<vec2i>	impList;
+	std::vector<vec2i>	blobList;
+
 						Map(r2::Node* parent);
 
 	rd::StaticBatch*	groundBatch{};
@@ -16,6 +19,8 @@ public:
 	rd::StaticBatch*	topBatch{};
 	Pasta::TextureData* data{};
 
+	rd::Rand			rnd;
 	vec2				getCenter();
 	void				im();
+	void				genGround(int x, int y);
 };

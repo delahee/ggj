@@ -57,7 +57,32 @@ void Game::hitWallPix(float px, float py){
 		}
 		b = b->next;
 	}
+
+	bloodsplash(px, py);
 }
+
+void Game::bloodsplash(int px, int py){
+	rd::Rand& rand = Rand::get();
+	for (int i = 0; i < 16; ++i) {
+
+		int sz = rand.dice(1, 2);
+		r2::Graphics* sp = r2::Graphics::rect(-sz * 0.5f, -sz * 0.5f, sz, sz, 0xff0000, 1.0f, root);
+		auto p = new r2::fx::Part(sp, &al);
+		p->x = px;
+		p->y = py - rand.dice(4, 12);
+		auto a = rand.angle();
+		float speed = rand.diceF(0.9f, 1.1f);
+		sp->rotation = rand.angle();
+		p->dx = cos(a) * speed;
+		p->dy = sin(a) * speed;
+		p->frictX = p->frictY = 0.92f + rand.diceF(0, 0.02f);
+		p->gy = 0.1f;
+		p->setLife(p->getLife() * rand.diceF(0.9f, 1.1f));
+		p->groundY = py + rand.dice(12, 24);
+		p->useGround = true;
+	}
+}
+
 
 static bool defeated = false;
 void Game::defeat(){
@@ -106,16 +131,33 @@ Game::Game(r2::Node* _root, r2::Scene* sc, rd::AgentList* parent) : Super(parent
 	ui = new UI(root);
 	bulMan = new BulMan(this,&al);
 	player = new Player(this,root);
-	//player->init("player");
-	player->init("player");
-	player->setPixelPos(Cst::W/2, Cst::H/2);
-	//player->setGridPos(Cst::W/2, Cst::H/2);
 
-	auto e = new Entity(this,root);
-	e->init("imp");
-	e->setPixelPos(100, 100);
-	nmies.push_back(e);
-	
+	player->init("player");
+	player->setGridPos(map->playerSpawn.x, map->playerSpawn.y);
+
+	tw.create(sc, (rs::TVar) r2::Scene::VCamPosX, (map->playerSpawn.x * Cst::GRID) - scRoot->x * sc->getZoomX());
+	tw.create(sc, (rs::TVar) r2::Scene::VCamPosY, (map->playerSpawn.y * Cst::GRID) - scRoot->y * sc->getZoomY());
+
+	if (false) {
+		auto e = new Entity(this, root);
+		e->init("imp");
+		e->setPixelPos(100, 100);
+		nmies.push_back(e);
+	}
+
+	for(auto pos : map->impList){
+		auto e = new Entity(this, root);
+		e->init("imp");
+		e->setGridPos(pos.x, pos.y);
+		nmies.push_back(e);
+	}
+
+	for (auto pos : map->blobList) {
+		auto e = new Entity(this, root);
+		e->init("blob");
+		e->setGridPos(pos.x, pos.y);
+		nmies.push_back(e);
+	}
 }
 
 void Game::update(double dt) {

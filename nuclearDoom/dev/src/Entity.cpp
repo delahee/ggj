@@ -57,10 +57,40 @@ void Entity::fire(int x, int y) {
 	fire(x, y, Data::getProj("dummy"));
 }
 
-void Entity::fire(int pixX, int pixY, ProjData * proj) {
-	Bullet b;
-
+void Entity::muzzle(int toX, int toY, ProjData* proj) {
 	auto ppos = getPixelPos();
+
+	auto gfx = r2::Graphics::fromPool(parent);
+
+	vec2 dir = vec2( toX - ppos.x, toY - ppos.y);
+	dir = dir.getNormalizedSafeZero();
+	dir *= 8;
+
+	gfx->color = r::Color::Yellow;
+	gfx->drawDisc(0.0f, 0.0f, 8);
+	gfx->x = x + dir.x; 
+	gfx->y = y + dir.y; 
+	gfx->trsDirty = true;
+
+	rs::Timer::delay(20, [=] { gfx->color = r::Color::White; });
+	rs::Timer::delay(40, [=] { gfx->color = r::Color::Black; });
+	rs::Timer::delay(60, [=] { gfx->destroy(); });
+}
+
+void Entity::fire(int toX, int toY, ProjData * proj) {
+	auto ppos = getPixelPos();
+
+	muzzle(toX, toY,proj);
+
+	//recoil
+	{
+		vec2 dir = - vec2(toX - ppos.x, toY - ppos.y);
+		dir = dir.getNormalizedSafeZero();
+		dx += dir.x * 0.2;
+		dy += dir.y * 0.2;
+	}
+
+	Bullet b;
 	b.x = ppos.x;
 	b.y = ppos.y;
 	b.sprName = proj->sprName;
@@ -68,7 +98,7 @@ void Entity::fire(int pixX, int pixY, ProjData * proj) {
 
 	float speed = proj->speed;
 
-	vec2 dir = { pixX - b.x, pixY - b.y };
+	vec2 dir = { toX - b.x, toY - b.y };
 	dir = dir.getNormalizedSafeZero();
 	b.dx = dir.x * speed;
 	b.dy = dir.y * speed;
@@ -81,7 +111,6 @@ void Entity::fire(int pixX, int pixY, ProjData * proj) {
 	b.fam = data->isPlayer() ? Family::Player : Family::Nmy;
 	game->bulMan->addBullet(b);
 }
-
 
 
 void Entity::onDeath(){
@@ -108,35 +137,45 @@ void Entity::updateHits(){
 		int buldy = game->bulMan->dy[result];
 		dx += buldx * 0.01f;
 		dy += buldy * 0.01f;
-		//
 
 		//
 		int dmg = game->bulMan->getBulletDmg(result);
 
-		rd::Rand& rand = Rand::get();
-		for (int i = 0; i < 16; ++i) {
-
-			int sz = rand.dice(1, 2);
-			r2::Graphics* sp = r2::Graphics::rect(-sz*0.5f, -sz*0.5f, sz, sz, 0xff0000, 1.0f, parent);
-			auto p = new r2::fx::Part(sp, &al);
-			p->x = bulx;
-			p->y = buly - rand.dice(4,12);
-			auto a = rand.angle();
-			float speed = rand.diceF(0.9f, 1.1f);
-			sp->rotation = rand.angle();
-			p->dx = cos(a)*speed;
-			p->dy = sin(a)*speed;
-			p->frictX = p->frictY = 0.92f + rand.diceF(0,0.02f);
-			p->gy = 0.1f;
-			p->setLife(p->getLife() * rand.diceF(0.9f, 1.1f));
-			p->groundY = y + rand.dice(12, 24);
-			p->useGround = true;
-		}
+		bloodSplash(bulx,buly);
 
 		hit(result, 0);
 
 		game->bulMan->destroy(result);
 	}
+}
+
+void Entity::bloodSplash(int px, int py){
+	rd::Rand& rand = Rand::get();
+	for (int i = 0; i < 16; ++i) {
+
+		int sz = rand.dice(1, 2);
+		r2::Graphics* sp = r2::Graphics::rect(-sz * 0.5f, -sz * 0.5f, sz, sz, 0xff0000, 1.0f, parent);
+		auto p = new r2::fx::Part(sp, &al);
+		p->x = px;
+		p->y = py - rand.dice(4, 12);
+		auto a = rand.angle();
+		float speed = rand.diceF(0.9f, 1.1f);
+		sp->rotation = rand.angle();
+		p->dx = cos(a) * speed;
+		p->dy = sin(a) * speed;
+		p->frictX = p->frictY = 0.92f + rand.diceF(0, 0.02f);
+		p->gy = 0.1f;
+		p->setLife(p->getLife() * rand.diceF(0.9f, 1.1f));
+		p->groundY = y + rand.dice(12, 24);
+		p->useGround = true;
+	}
+}
+bool Entity::isActivated()
+{
+	if (data->isPlayer())
+		return true;
+
+	return (getPixelPos() - game->player->getPixelPos()).getNorm() < 800;
 }
 
 void Entity::im(){
@@ -171,11 +210,41 @@ void Entity::im(){
 	Super::im();
 }
 
+bool Entity::isStunned(){
+	return stunDur >= 0.0f;
+}
+
 void Entity::update(double dt) {
 	Super::update(dt);
 
-	if (!isDead()) {
+	stunDur -= dt;
+
+	if (!isDead() && isActivated() && !isStunned()) {
+		if( data->isNmy()){
+			if (data->name == "imp") {
+				vec2 toPlayer = vec2(game->player->x -x,game->player->y -y);
+				toPlayer = toPlayer.getNormalizedSafeZero();
+				float speed = 1.0;
+				dx = r::Math::lerp(  dx, toPlayer.x, 0.8f);
+				dy = r::Math::lerp(  dy, toPlayer.y, 0.8f);
+			}
+		}
+	}
+
+	if (!isDead() && isActivated()) {
 		updateMovement(dt);
+
+		bool run = false;
+		run |= abs(dx) > 0.01f || abs(dy) > 0.01f;
+		if (!isActivated())
+			run = false;
+
+		if( run ){
+			spr->player.speed = 1.0f;
+		}
+		else {
+			spr->player.speed = 0.2f;
+		}
 		updateHits();
 	}
 	al.update(dt);
@@ -228,6 +297,7 @@ Vector2 Entity::getPixelPos(){
 }
 
 void Entity::updateMovement(double dt){
+
 	rx += dx * dt;
 	ry += dy * dt;
 
@@ -235,7 +305,11 @@ void Entity::updateMovement(double dt){
 	dy = frictX * dy;
 
 	while( rx > 1 ){
-		if( game->isWallGrid(cx+rx,cy+ry) ){
+		if( game->isWallGrid(cx+rx+1,cy+ry) ){
+			rx = 0.99f;
+			break;
+		}
+		if (game->isWallGrid(cx + rx + 1, cy + ry -1)) {
 			rx = 0.99f;
 			break;
 		}
@@ -248,6 +322,10 @@ void Entity::updateMovement(double dt){
 			rx = 0.01f;
 			break;
 		}
+		if (game->isWallGrid(cx + rx, cy + ry-1)) {
+			rx = 0.01f;
+			break;
+		}
 		rx++;
 		cx--;
 	}
@@ -256,7 +334,7 @@ void Entity::updateMovement(double dt){
 
 	while (ry > 1) {
 		int testY = cy + ry;
-		if (isTall) testY++;
+		if (isTall) testY+=1.0f;
 		if (game->isWallGrid(cx + rx, testY)) {
 			ry = 0.99f;
 			break;
@@ -267,7 +345,7 @@ void Entity::updateMovement(double dt){
 
 	while (ry < 0) {
 		int testY = cy + ry;
-		if (isTall) testY--;
+		//if (isTall) testY--;
 		if (game->isWallGrid(cx + rx, testY)) {
 			ry = 0.01f;
 			break;
@@ -284,6 +362,8 @@ void Entity::syncPos(){
 }
 
 void Entity::hit(int dmg, EntityData* by) {
+	if (stunDur < 0)stunDur = 0;
+	stunDur += 0.5f;
 	hp -= dmg;
 	bool dead = isDead();
 	if (dead) {

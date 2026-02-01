@@ -262,6 +262,7 @@
             <key type="filename">boss shoot2.png</key>
             <key type="filename">boss shoot3.png</key>
             <key type="filename">bullet.png</key>
+            <key type="filename">bullet_plasma.png</key>
             <key type="filename">bullet_shotgun.png</key>
             <key type="filename">hardWall1.png</key>
             <key type="filename">hardWall2.png</key>

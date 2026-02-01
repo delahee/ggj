@@ -70,6 +70,8 @@ public:
 	Game*			game = 0;
 	rd::AgentList	al;
 
+	float stunDur = 0.0f;
+
 	bool			fadingOut = false;
 	float			blinking = 0.0f;
 	bool			invincible = false;
@@ -85,6 +87,7 @@ public:
 	void			init(EntityData* data);
 
 	void			im();
+	bool			isStunned();
 	virtual void	update(double dt) override;
 
 	void			setGridPos(int x, int y);
@@ -101,10 +104,15 @@ public:
 
 	void			fire(Entity&opp);
 	virtual void	fire(int pixX, int pixY);
+	void			muzzle(int pixX, int pixY, ProjData* proj);
 	virtual void	fire(int pixX, int pixY, ProjData * proj);
 	void			onDeath();
 	bool			isDead();
 	void			updateHits();
+
+	void			bloodSplash(int px, int py);
+
+	bool			isActivated();
 
 	static std::vector<Entity*>	ALL;
 };

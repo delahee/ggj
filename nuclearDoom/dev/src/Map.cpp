@@ -2,7 +2,10 @@
 #include "Map.hpp"
 #include "rd/Rand.hpp"
 
+using namespace rs;
 using namespace std::string_literals;
+
+
 
 Map::Map(r2::Node* parent):r2::Node(parent){
 	name = "map";
@@ -25,6 +28,7 @@ Map::Map(r2::Node* parent):r2::Node(parent){
 	hardWalls.setSize(w, h);
 	softWalls.setSize(w, h);
 
+	rnd.init(0xdeadbeef);
 	for (int y = 0; y < h; y++)
 		for (int x = 0; x < w; x++){
 			u8* cal = bmp->getRawTexel(x,y,tw);
@@ -33,26 +37,26 @@ Map::Map(r2::Node* parent):r2::Node(parent){
 			u8 blue = *(cal+2);
 			u8 alpha = *(cal+3);
 
-			u32 col24 = red | green << 8 | blue << 16;
+			u32 col24 = red<<16 | green << 8 | blue ;
 
-			if( col24 == 0xff00ff)//player spawn
+			if (col24 == 0xff00ff) {//player spawn
+				genGround(x, y);
 				playerSpawn = { x,y };
-			else if(col24== 0xff0000){
-				groundA.set(x, y);
-
-				int groundType = rand.dice(1, 1);
-				std::string label = "ground"s + std::to_string(groundType);
-				auto b = r2::BatchElem::fromLib(Data::assets, label.c_str(), wallBatch);
-				b->x = x * Cst::GRID;
-				b->y = y * Cst::GRID;
-				b->setPriority(-1000);
-				b->vars.setTag("ground");
-
-				std::string coo = std::to_string(x) + "_" + std::to_string(y);
-				b->vars.setTag(coo.c_str());
 			}
-			else if(col24== 0xffffff){
-				hardWalls.set(x,y);
+			else if (col24 == 0xffff00) {
+				genGround(x, y);
+				impList.push_back({ x,y });
+			}
+			else if (col24 == 0x00c6ff) {
+				genGround(x, y);
+				blobList.push_back({ x,y });
+			}
+			else if (col24 == 0xff0000) {
+				groundA.set(x, y);
+				genGround(x, y);
+			}
+			else if (col24 == 0xffffff) {
+				hardWalls.set(x, y);
 
 				int wallType = rand.dice(1, 1);
 				std::string label = "hardWall"s + std::to_string(wallType);
@@ -61,11 +65,13 @@ Map::Map(r2::Node* parent):r2::Node(parent){
 				b->y = y * Cst::GRID;
 				b->vars.setTag("wall");
 				b->vars.setTag("hard");
-
+				b->setCenterRatio();
 				std::string coo = std::to_string(x) + "_" + std::to_string(y);
 				b->vars.setTag(coo.c_str());
 			}
 			else if (col24 == 0x00ff00) {
+				//draw ground under;
+				genGround(x, y);
 				softWalls.set(x, y);
 
 				int wallType = rand.dice(1, 7);
@@ -75,14 +81,26 @@ Map::Map(r2::Node* parent):r2::Node(parent){
 				b->y = y * Cst::GRID;
 				b->vars.setTag("wall");
 				b->vars.setTag("soft");
-
+				b->setCenterRatio();
 				std::string coo = std::to_string(x) + "_" + std::to_string(y);
-				b->vars.setTag("soft");
 				b->vars.setTag(coo.c_str());
 			}
-
+			else
+				trace("unexpected at " + std::to_string(x) + std::to_string(y));
 		}
-	//bmp->getRawTexel();
+}
+
+void Map::genGround(int x, int y) {
+	int groundType = rnd.dice(1, 1);
+	std::string label = "ground"s + std::to_string(groundType);
+	auto b = r2::BatchElem::fromLib(Data::assets, label.c_str(), wallBatch);
+	b->x = x * Cst::GRID;
+	b->y = y * Cst::GRID;
+	b->setCenterRatio();
+	b->setPriority(1000);
+	std::string coo = std::to_string(x) + "_" + std::to_string(y);
+	b->vars.setTag("ground");
+	b->vars.setTag(coo.c_str());
 }
 
 vec2 Map::getCenter(){

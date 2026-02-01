@@ -23,19 +23,20 @@ ProjData* Data::getProj(const char* name){
 
 void Data::init(){
 	assets = r2::im::TilePicker::getOrLoadLib("assets.xml");
+	assets->defaultFrameRate = 10;
 
 	{
 		auto d = new EntityData();
 		d->name = "imp";
 		d->tags.push_back("nmy");
-		d->hp -= 3;
+		d->hp += 10;
 		entities[d->name] = d;
 	}
 	{
 		auto d = new EntityData();
 		d->name = "blob";
 		d->tags.push_back("nmy");
-		d->hp += 3;
+		d->hp += 5;
 		entities[d->name] = d;
 	}
 	{
