@@ -4,7 +4,7 @@
 #include "BulMan.hpp"
 
 BulMan::BulMan(Game *g, rd::AgentList* al) : rd::Agent(al){
-
+	game = g;
 	int future = 64;
 	flags.reserve(future);
 	x.reserve(future);
@@ -54,6 +54,20 @@ void BulMan::update(double _dt) {
 		}
 	}
 
+	sz = nbActive;
+	for (int idx = sz - 1; idx >= 0; --idx) {
+		auto& vx = x[idx];
+		auto& vy = y[idx];
+
+		if( game->isWallPix(vx,vy)){
+			game->hitWallPix(vx,vy);
+
+			swap(idx, nbActive - 1);
+			onInactive(nbActive - 1);
+			nbActive--;
+		}
+	}
+
 	for (int idx = 0; idx < sz; ++idx) {
 		auto& vspr = spr[idx];
 		if (vspr) {
@@ -69,8 +83,6 @@ void BulMan::update(double _dt) {
 }
 
 void BulMan::addBullet(Bullet b){
-	nbActive = x.size();
-
 	int res = nbActive + 1;
 	flags.resize(res);
 	x.resize(res);

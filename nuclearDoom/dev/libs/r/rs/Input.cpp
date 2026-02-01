@@ -187,11 +187,21 @@ bool rs::Input::isDown(Pasta::Key k){
 bool rs::Input::isJustPressed(Pasta::Key k)
 {
 	InputMgr* mgr = Pasta::InputMgr::getSingleton();
-	if (isKeyJustPressed(CT_KEYBOARD, k)) return true;
+	if (isKeyJustPressed(CT_KEYBOARD, k)) 
+		return true;
 	if (isAnyPadJustPressed(k)) return true;
-	if (mgr->keyIsPressed(Pasta::ControllerType::CT_MOUSE, k))
+	if (
+		//mgr->keyIsPressed(Pasta::ControllerType::CT_MOUSE, k)
+		mgr->keyHasBeenPressedThisFrame(Pasta::ControllerType::CT_MOUSE, k)
+		)
 		return true;
 	return false;
+}
+
+bool rs::Input::isMouseJustPressed(Pasta::Key k){
+	InputMgr* mgr = Pasta::InputMgr::getSingleton();
+	if (mgr->keyHasJustBeenPressed(Pasta::ControllerType::CT_MOUSE, k))
+		return true;
 }
 
 bool rs::Input::isJustReleased(Pasta::Key k)

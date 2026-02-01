@@ -8,6 +8,7 @@ class Game;
 
 struct EntityData{
 	std::string					name;
+	std::string					sprName;
 	std::string					attack;
 	std::vector<Str>			tags;
 
@@ -16,12 +17,10 @@ struct EntityData{
 	int							hp = 10;
 	int							maxUpgrade = 0;
 	int							dmg = 1;
-	int							range = 30;
 	float						cooldown = 1.0f;
 	float						projSpeed = 0.1f;
 
 	bool						isMonster();
-	bool						isTurret() { return good; };
 
 	static EntityData*			get(const char* name);
 };
@@ -74,8 +73,10 @@ public:
 	void			im();
 	virtual void	update(double dt) override;
 
+	void			setGridPos(int x, int y);
 	void			setPixelPos(float x, float y);
 	void			setPixelPos(const Vector2& pos);
+
 	Vector2			getPixelPos();
 
 	void			updateMovement(double dt);

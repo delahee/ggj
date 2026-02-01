@@ -26,10 +26,11 @@ void Entity::init(const char* name){
 
 void Entity::init(EntityData * _data) {
 	data = _data;
-	if (spr == 0)
-		spr = rd::ABitmap::fromPool(Data::assets, data->name.c_str(), this);
-	else
-		spr->set(Data::assets, data->name.c_str());
+	std::string label = data->sprName.empty() ? data->name : data->sprName;
+	if (spr == 0){
+		spr = rd::ABitmap::fromPool(Data::assets, label.c_str(), this);
+	}else
+		spr->set(Data::assets, label.c_str());
 	spr->setCenterRatio(0.5, 0.5);
 	name = data->name + "#" + std::to_string(uid);
 	hp = data->hp;
@@ -97,6 +98,18 @@ void Entity::update(double dt) {
 	}
 }
 
+void Entity::setGridPos(int x, int y){
+	cx = x;
+	cy = y;
+
+	rx = 0.5;
+	ry = 0.5;
+
+	x = std::lrint((cx + rx) + Cst::GRID);
+	y = std::lrint((cy + ry) + Cst::GRID);
+	trsDirty = true;
+}
+
 void Entity::setPixelPos(float x, float y) {
 	setPixelPos({ x,y });
 }
@@ -123,21 +136,43 @@ void Entity::updateMovement(double dt){
 	dy = frictX * dy;
 
 	while( rx > 1 ){
+		if( game->isWallGrid(cx+rx,cy+ry) ){
+			rx = 0.99;
+			break;
+		}
 		rx--;
 		cx++;
 	}
 
 	while (rx < 0) {
+		if (game->isWallGrid(cx + rx, cy + ry)) {
+			rx = 0.01;
+			break;
+		}
 		rx++;
 		cx--;
 	}
 
+	bool isTall = true;
+
 	while (ry > 1) {
+		int testY = cy + ry;
+		if (isTall) testY++;
+		if (game->isWallGrid(cx + rx, testY)) {
+			ry = 0.99;
+			break;
+		}
 		ry--;
 		cy++;
 	}
 
 	while (ry < 0) {
+		int testY = cy + ry;
+		if (isTall) testY--;
+		if (game->isWallGrid(cx + rx, testY)) {
+			ry = 0.01;
+			break;
+		}
 		ry++;
 		cy--;
 	}

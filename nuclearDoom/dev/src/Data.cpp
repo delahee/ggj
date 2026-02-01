@@ -3,6 +3,7 @@
 #include "Data.hpp"
 #include "r2/im/TilePicker.hpp"
 #include "Entity.hpp"
+#include "Data.hpp"
 
 rd::TileLib* Data::assets = 0;
 std::unordered_map<Str, EntityData*> Data::entities;
@@ -23,6 +24,7 @@ void Data::init(){
 	{
 		auto d = new EntityData();
 		d->name = "player";
+		d->sprName = "Doom slayer pixel";
 		d->tags.push_back("player");
 		entities[d->name] = d;
 	}
@@ -40,3 +42,4 @@ void Data::init(){
 	}
 
 }
+

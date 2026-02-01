@@ -84,7 +84,7 @@ void App_GameState::testGame(){
 		//mainScene->setPan( -remSX, -remSY);
 		auto n = r2::Node::fromPool(ps);
 		n->setPos(remSX, remSY);
-		n->name = "map";
+		n->name = "game root";
 		auto stage = r2::Node::fromPool(ps);
 		stage->name = "stage";
 		bootGame(n);

@@ -2,6 +2,7 @@
 
 #include <unordered_map>
 #include <EASTL/variant.h>
+#include "../../../skd/dev/src/App_GameState.h"
 
 #include "r2/Node.hpp"
 #include "rd/ABitmap.hpp"
@@ -26,12 +27,46 @@ void Game::onFrag(){
 
 }
 
+bool Game::isWallPix(float px, float py){
+	int cx = px / Cst::GRID;
+	int cy = py / Cst::GRID;
+	if (isWallGrid(cx,cy)) 
+		return true;
+	return false;
+}
+
+bool Game::isWallGrid(int cx, int cy){
+	if (map->softWalls.get(cx, cy)) 
+		return true;
+	if (map->hardWalls.get(cx, cy))
+		return true;
+	return false;
+}
+
+void Game::hitWallPix(float px, float py){
+	int cx = px / Cst::GRID;
+	int cy = py / Cst::GRID;
+	map->softWalls.set(cx, cy, 0);
+
+	std::string coordTag = std::to_string(cx) + "_" + std::to_string(cy);
+	auto b = map->wallBatch->head;
+	while (b) {
+		if (b->vars.hasTag("soft") && b->vars.hasTag(coordTag.c_str())) {
+			b->destroy();
+			break;
+		}
+		b = b->next;
+	}
+}
+
 static bool defeated = false;
 void Game::defeat(){
 	if (defeated)
 		return;
 
 }
+
+
 
 void Game::intro(){
 	
@@ -66,12 +101,15 @@ Game::Game(r2::Node* _root, r2::Scene* sc, rd::AgentList* parent) : Super(parent
 	Data::init();
 
 	rd::AudioMan::get().init();
+
 	map = new Map(root);
 	ui = new UI(root);
 	bulMan = new BulMan(this,&al);
 	player = new Player(this,root);
+	//player->init("player");
 	player->init("player");
 	player->setPixelPos(Cst::W/2, Cst::H/2);
+	//player->setGridPos(Cst::W/2, Cst::H/2);
 
 	auto e = new Entity(this,root);
 	e->init("imp");
@@ -156,7 +194,67 @@ bool Game::im(){
 			}
 			idx++;
 		}
+
+		if (TreeNode("asset test")) {
+			if (Button("Boss Shoot")) {
+				::Bullet b;
+				b.sprName = "boss shoot";
+				b.x = 200;
+				b.y = 100;
+				b.dy = 1;
+				b.frictx = b.fricty = 1;
+				bulMan->addBullet(b);
+			}
+
+			if (Button("Bullet")) {
+				::Bullet b;
+				b.sprName = "bullet";
+				b.x = 250;
+				b.y = 100;
+				b.dy = 50;
+				b.frictx = b.fricty = 1;
+				bulMan->addBullet(b);
+			}
+
+			static int wallType = 1;
+			SliderInt("wall type", &wallType,  1, 7);
+			if (Button("Wall")) {
+				map->wallBatch->destroyAllElements();
+				for (int i = 0; i < 16; ++i) {
+					std::string label = "wall"s + std::to_string(wallType);
+					auto b = r2::BatchElem::fromLib(Data::assets,label.c_str(),map->wallBatch);
+					b->x = 16 + i * b->width();
+					b->y = 16;
+				}
+			}
+
+			if (Button("Blob")) {
+				
+				auto b = r2::Bitmap::fromLib(Data::assets, "blob", root);
+				b->x = 64;
+				b->y = 64;
+				
+			}
+			TreePop();
+		}
+
+		auto sc = App_GameState::me->mainScene;
+		vec2 mouseScreen = { (float)rs::Sys::mouseX, (float)rs::Sys::mouseY };
+		vec2 mouseSc = sc->globalToLocal( r2::Lib::screenToGlobal(sc, mouseScreen) );
+		vec2 mouseGame = scRoot->globalToLocal(mouseSc);
+		Value("mouse abs", mouseScreen);
+		Value("mouse scene", mouseSc);
+		Value("mouse game", mouseGame);
 		End();
 	}
 	return false;
+}
+
+vec2 Game::getGameMousePos()
+{
+	auto sc = App_GameState::me->mainScene;
+	vec2 mouseScreen = { (float)rs::Sys::mouseX, (float)rs::Sys::mouseY };
+	vec2 mouseSc = sc->globalToLocal(r2::Lib::screenToGlobal(sc, mouseScreen));
+	vec2 mouseGame = scRoot->globalToLocal(mouseSc);
+	return mouseGame;
 }

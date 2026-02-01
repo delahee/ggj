@@ -30,7 +30,14 @@ namespace ldtk {
 	};
 
 	struct IntGrid {
-		std::vector<s16> bitmap;
+		s16				 w=0;
+		s16				 h=0;
+		std::vector<u32> bitmap;
+
+		void	setSize(s16 w, s16 h);
+
+		void	set(s16 x, s16 y, u32 val = 1);
+		u32		get(s16 x, s16 y);
 	};
 
 	class Data {

@@ -34,6 +34,8 @@ public:
 	int				frags = 0;
 	rd::Tweener		tw;
 
+	vec2			getGameMousePos();
+
 	void			intro();
 	void			sfx(const char* name);
 	void			beginGame();
@@ -48,5 +50,9 @@ public:
 	bool			im();
 
 	void			onFrag();
+
+	bool			isWallPix(float px, float py);
+	bool			isWallGrid(int cx, int cy);
+	void			hitWallPix(float px, float py);
 };
 

@@ -17,7 +17,7 @@ public:
 					Player(Game*g,r2::Node* parent);
 
 	virtual void	update(double dt)override;
-	void			fire();
+	void			fire( int pixX, int pixY);
 
 	void			controlsMove(vec2 move,double dt);
 	void			controls(double dt);

@@ -3,6 +3,7 @@
 #include "Entity.hpp"
 #include "Player.hpp"
 #include "BulMan.hpp"
+#include "App_GameState.h"
 
 Player::Player(Game*g,r2::Node* parent) : Entity(g,parent){
 
@@ -38,27 +39,29 @@ void Player::controls(double dt){
 	if(move!=vec2(0,0))
 		controlsMove(move,dt);
 
-	if (rs::Input::isJustPressed(Pasta::Key::MOUSE_LEFT)) {
-		fire();
+	if (rs::Input::isMouseJustPressed(Pasta::Key::MOUSE_LEFT)) {
+		auto mousePos = game->getGameMousePos();
+		fire(mousePos.x, mousePos.y);
 	}
 }
 
-void Player::fire(){
+void Player::fire(int pixX, int pixY){
 	Bullet b;
 	auto ppos = getPixelPos();
 	b.x = ppos.x;
 	b.y = ppos.y;
 	b.sprName = "bullet";
 
-	float speed = 10.0f;
-	if (dy && dx) {
-		vec2 dir = { dx,dy };
-		dir = dir.getNormalizedSafeZero();
-		b.dx = dx * speed;
-		b.dy = dy * speed;
+	float speed = 150.0f;
+
+	vec2 dir = { pixX - b.x, pixY - b.y };
+	dir = dir.getNormalizedSafeZero();
+	b.dx = dir.x * speed;
+	b.dy = dir.y * speed;
+
+	if( !b.dx &&!b.dy){
+		b.dy = 1;
 	}
-	else 
-		b.dy = 1 * speed;
 	b.life = 10.0f;
 	b.frictx = b.fricty = 1;
 	game->bulMan->addBullet(b);

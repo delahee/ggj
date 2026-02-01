@@ -35,7 +35,7 @@ public:
 	std::vector<Behavior>			bhv;
 	std::vector<rd::ABatchElem*>	spr;
 
-	Game *							g = 0;		
+	Game *							game = 0;		
 	r2::Batch*						rdr = 0;
 									BulMan(Game * g, rd::AgentList* al);
 	virtual void					update(double dt);
