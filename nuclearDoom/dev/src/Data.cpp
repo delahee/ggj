@@ -6,7 +6,9 @@
 #include "Data.hpp"
 
 rd::TileLib* Data::assets = 0;
+
 std::unordered_map<Str, EntityData*> Data::entities;
+std::unordered_map<Str, ProjData*> Data::projs;
 
 void Data::update(double dt) {
 	
@@ -19,6 +21,14 @@ void Data::init(){
 		auto d = new EntityData();
 		d->name = "imp";
 		d->tags.push_back("nmy");
+		d->hp -= 3;
+		entities[d->name] = d;
+	}
+	{
+		auto d = new EntityData();
+		d->name = "blob";
+		d->tags.push_back("nmy");
+		d->hp += 3;
 		entities[d->name] = d;
 	}
 	{
@@ -41,5 +51,12 @@ void Data::init(){
 		entities[d->name] = d;
 	}
 
+	{
+		auto d = new ProjData();
+		d->name = "imp";
+		d->tags.push_back("nmy");
+		d->dmg = 3;
+		projs[d->name] = d;
+	}
 }
 

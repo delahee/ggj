@@ -10,6 +10,7 @@ class Game;
 class Map;
 class UI;
 class BulMan;
+class Player;
 class rgp::CineController;
 
 namespace r2 { class Node; }

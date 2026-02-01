@@ -6,23 +6,37 @@ struct EntityData;
 struct Path;
 class Game;
 
+enum Weapon {
+	Shotgun,
+	Plasma,
+	Rocket,
+	Hit,
+};
+
+struct ProjData{
+	int dmg = 3;
+
+	std::vector<Str>			tags;
+	std::string name;
+};
+
 struct EntityData{
+	Weapon						wp = Hit;
+	int							hp = 10;
+	int							dmg = 1;
+	float						speed = 25.0f;
+
 	std::string					name;
 	std::string					sprName;
 	std::string					attack;
 	std::vector<Str>			tags;
+	
 
-	bool						good = false;
-	float						speed = 10.0f;
-	int							hp = 10;
-	int							maxUpgrade = 0;
-	int							dmg = 1;
-	float						cooldown = 1.0f;
-	float						projSpeed = 0.1f;
-
-	bool						isMonster();
+	bool						isNmy();
+	bool						isPlayer();
 
 	static EntityData*			get(const char* name);
+	bool						hasTag(const char * tag);
 };
 
 class Entity : public r2::Node {
@@ -42,6 +56,8 @@ public:
 	float			frictX = 0.95f;
 	float			frictY = 0.95f;
 
+	int				hp = 0;
+
 	int				upgrade = 0;
 	float			cooldown = 0.0f;
 	Vector2			prevPos;
@@ -57,8 +73,6 @@ public:
 	bool			fadingOut = false;
 	float			blinking = 0.0f;
 	bool			invincible = false;
-
-	int				hp = 0;
 
 	enum class State : int {
 		Running,
@@ -85,7 +99,11 @@ public:
 
 	void			hit(int dmg, EntityData * by = nullptr);
 
-	void			fire(Entity*opp);
+	void			fire(Entity&opp);
+	void			fire(int pixX, int pixY);
+	void			onDeath();
+	bool			isDead();
+	void			updateHits();
 
 	static std::vector<Entity*>	ALL;
 };

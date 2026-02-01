@@ -10,7 +10,6 @@ Player::Player(Game*g,r2::Node* parent) : Entity(g,parent){
 }
 
 void Player::update(double dt) {
-	updateMovement(dt);
 	Entity::update(dt);
 }
 
@@ -45,24 +44,3 @@ void Player::controls(double dt){
 	}
 }
 
-void Player::fire(int pixX, int pixY){
-	Bullet b;
-	auto ppos = getPixelPos();
-	b.x = ppos.x;
-	b.y = ppos.y;
-	b.sprName = "bullet";
-
-	float speed = 150.0f;
-
-	vec2 dir = { pixX - b.x, pixY - b.y };
-	dir = dir.getNormalizedSafeZero();
-	b.dx = dir.x * speed;
-	b.dy = dir.y * speed;
-
-	if( !b.dx &&!b.dy){
-		b.dy = 1;
-	}
-	b.life = 10.0f;
-	b.frictx = b.fricty = 1;
-	game->bulMan->addBullet(b);
-}

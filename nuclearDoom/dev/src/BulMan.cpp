@@ -26,9 +26,9 @@ void BulMan::update(double _dt) {
 	int sz = nbActive;
 
 	for (int idx = 0; idx < sz; ++idx) {
-		auto& vflags	= flags[idx];
 		auto& vx		= x[idx];
 		auto& vy		= y[idx];
+
 		auto& vdx		= dx[idx];
 		auto& vdy		= dy[idx]; 
 		
@@ -94,6 +94,8 @@ void BulMan::addBullet(Bullet b){
 	life.resize(res);
 	bhv.resize(res);
 	spr.resize(res);
+	fam.resize(res);
+	dmg.resize(res);
 
 	int idx = nbActive;
 	x[idx] = b.x;
@@ -103,6 +105,8 @@ void BulMan::addBullet(Bullet b){
 	life[idx] = b.life;
 	frictX[idx] = b.frictx;
 	frictY[idx] = b.fricty;
+	fam[idx] = b.fam;
+	dmg[idx] = b.dmg;
 	
 	auto ab = spr[idx] = rd::ABatchElem::fromPool(b.sprName.c_str(), Data::assets, rdr);
 	if (!ab) return;
@@ -113,12 +117,44 @@ void BulMan::addBullet(Bullet b){
 	nbActive++;
 }
 
+int BulMan::getBulletDmg(int idx)
+{
+	if (idx < 0)
+		return 0;
+	return dmg[idx];
+}
+
 void BulMan::onInactive(int idxA){
 	if (spr[idxA]) {
 		spr[idxA]->visible = false;
 		spr[idxA]->toPool();
 	}
 	spr[idxA] = 0;
+}
+
+void BulMan::testBullet(float px, float py, Family pfam, int bSize,int& result){
+	int sz = nbActive;
+	for (int idx = 0; idx < sz; ++idx) {
+		auto& vx = x[idx];
+		auto& vy = y[idx];
+		auto& vfam = fam[idx];
+		if (vfam != pfam)
+			continue;
+		if( vec2(px - vx, py - vy).getNormSquared() < bSize* bSize ){
+			result = idx;
+			return;
+		}
+	}
+	result = -1;
+}
+
+void BulMan::destroy(int idx)
+{
+	if (nbActive == 0)
+		return;
+	swap(idx, nbActive - 1);
+	onInactive(nbActive - 1);
+	nbActive--;
 }
 
 void BulMan::im(int idx) {
@@ -131,6 +167,8 @@ void BulMan::im(int idx) {
 	Value("frictX", frictX[idx]);
 	Value("frictY", frictY[idx]);
 	Value("spr", spr[idx]);
+	Value("fam", (int)fam[idx]);
+	Value("bhv", (int)bhv[idx]);
 }
 
 void BulMan::swap(int idxA, int idxB){
@@ -144,4 +182,7 @@ void BulMan::swap(int idxA, int idxB){
 	std::swap(frictX[idxA]	, frictX[idxB]);
 	std::swap(frictY[idxA]	, frictY[idxB]);
 	std::swap(spr[idxA]		, spr[idxB]);
+	std::swap(dmg[idxA]		, dmg[idxB]);
+	std::swap(fam[idxA]		, fam[idxB]);
+	std::swap(bhv[idxA]		, bhv[idxB]);
 }

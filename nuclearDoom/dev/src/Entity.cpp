@@ -1,7 +1,9 @@
-	#include "stdafx.h"
+#include "stdafx.h"
 
+#include "all.hpp"
 #include "Game.hpp"
 #include "Entity.hpp"
+#include "BulMan.hpp"
 #include "UserTypes.hpp"
 #include "rd/Garbage.hpp"
 #include "r2/fx/Part.hpp"
@@ -11,6 +13,8 @@ static bool inited = false;
 static EntityData* dummy = 0;
 static EntityData* imp = 0;
 static EntityData* player = 0;
+
+
 EntityData* EntityData::get(const char* name){
 	if( Data::entities.find(name) == Data::entities.end())
 		return dummy;
@@ -49,15 +53,71 @@ Entity::~Entity() {
 	dispose();
 }
 
+void Entity::fire(int pixX, int pixY) {
+	Bullet b;
+	auto ppos = getPixelPos();
+	b.x = ppos.x;
+	b.y = ppos.y;
+	b.sprName = "bullet";
+
+	float speed = 150.0f;
+
+	vec2 dir = { pixX - b.x, pixY - b.y };
+	dir = dir.getNormalizedSafeZero();
+	b.dx = dir.x * speed;
+	b.dy = dir.y * speed;
+
+	if (!b.dx && !b.dy) {
+		b.dy = 1;
+	}
+	b.life = 10.0f;
+	b.frictx = b.fricty = 1;
+	b.fam = data->isPlayer() ? Family::Player : Family::Nmy;
+	game->bulMan->addBullet(b);
+}
+
+void Entity::onDeath(){
+	blinking = 0.5f;
+}
+
+bool Entity::isDead(){
+	return hp <= 0;
+}
+
+void Entity::updateHits(){
+	int result = -1;
+	Family fam = Family::Nmy;
+	if (data->isNmy())
+		fam = Family::Player;
+
+	game->bulMan->testBullet(x, y, fam, 16>>1, result);
+	
+	if (result >= 0) {
+		int bulx = game->bulMan->x[result];
+		int buly = game->bulMan->y[result];
+		int buldx = game->bulMan->dx[result];
+		int buldy = game->bulMan->dy[result];
+
+		dx += buldx * 0.01f;
+		dy += buldy * 0.01f;
+
+		int dmg = game->bulMan->getBulletDmg(result);
+		hit(result, 0);
+		game->bulMan->destroy(result);
+	}
+}
+
 void Entity::im(){
 	using namespace ImGui;
 	if (TreeNode("data")) {
 		Value("name", data->name);
 		DragFloat("speed", &data->speed,0.001f,0,10);
 		Value("hp", data->hp);
-		Value("good", data->good);
+		Value("tags", data->tags);
 		TreePop();
 	}
+
+	Value("hp", hp);
 
 	Value("x", x);
 	Value("y", y);
@@ -67,6 +127,9 @@ void Entity::im(){
 
 	Value("ry", ry);
 	Value("cy", cy);
+
+	SliderFloat("frictX", &frictX, 0.8f, 1.0f);
+	SliderFloat("frictY", &frictY, 0.8f, 1.0f);
 
 	Value("cooldown", cooldown);
 	DragFloat("progress", &progress, 0, 10);
@@ -79,6 +142,10 @@ void Entity::im(){
 void Entity::update(double dt) {
 	Super::update(dt);
 
+	if (!isDead()) {
+		updateMovement(dt);
+		updateHits();
+	}
 	al.update(dt);
 
 	syncPos();
@@ -137,7 +204,7 @@ void Entity::updateMovement(double dt){
 
 	while( rx > 1 ){
 		if( game->isWallGrid(cx+rx,cy+ry) ){
-			rx = 0.99;
+			rx = 0.99f;
 			break;
 		}
 		rx--;
@@ -146,7 +213,7 @@ void Entity::updateMovement(double dt){
 
 	while (rx < 0) {
 		if (game->isWallGrid(cx + rx, cy + ry)) {
-			rx = 0.01;
+			rx = 0.01f;
 			break;
 		}
 		rx++;
@@ -159,7 +226,7 @@ void Entity::updateMovement(double dt){
 		int testY = cy + ry;
 		if (isTall) testY++;
 		if (game->isWallGrid(cx + rx, testY)) {
-			ry = 0.99;
+			ry = 0.99f;
 			break;
 		}
 		ry--;
@@ -170,7 +237,7 @@ void Entity::updateMovement(double dt){
 		int testY = cy + ry;
 		if (isTall) testY--;
 		if (game->isWallGrid(cx + rx, testY)) {
-			ry = 0.01;
+			ry = 0.01f;
 			break;
 		}
 		ry++;
@@ -186,34 +253,41 @@ void Entity::syncPos(){
 
 void Entity::hit(int dmg, EntityData* by) {
 	hp -= dmg;
-
-	bool dead = hp <= 0;
+	bool dead = isDead();
 	if (dead) {
-		if (data->isMonster()) {
+		onDeath();
+		if (data->isNmy()) {
 			game->onFrag();
 		}
 		if (by == nullptr) {
 			rd::Garbage::trash(this);
 		}
 		else {
-			if (by->name == "bike_park") {
-				init(Data::entities["bike"]);
-				fadingOut = true;
-			}
+			fadingOut = true;
 		}
 	}
 	else {
-		blinking = 0.2f;
+		if (blinking < 0)blinking = 0;
+		blinking += 0.2f;
 	}
 }
 
-void Entity::fire(Entity*opp) {
-	
+void Entity::fire(Entity&opp) {
+	vec2 pos = opp.getPixelPos();
+	fire(pos.x,pos.y);
 }
 
-bool EntityData::isMonster() {
-	for(auto &s :tags)
-		if (s == "monster")
+bool EntityData::isPlayer(){
+	return hasTag("player");
+}
+
+bool EntityData::isNmy(){
+	return hasTag("nmy");
+}
+
+bool EntityData::hasTag(const char* tag){
+	for (auto& s : tags)
+		if (s == tag)
 			return true;
 	return false;
 }
