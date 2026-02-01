@@ -3,6 +3,7 @@
 #include "Entity.hpp"
 #include "Player.hpp"
 #include "BulMan.hpp"
+#include "UI.hpp"
 #include "App_GameState.h"
 
 Player::Player(Game*g,r2::Node* parent) : Entity(g,parent){
@@ -35,12 +36,27 @@ void Player::controls(double dt){
 		move+={ 1,0 };
 	}
 
-	if (rs::Input::isPressed(Pasta::Key::KB_1)) 
+	auto msg = [this](const char* msg) {
+		auto t = r2::Text::fromPool(nullptr, msg, game->ui);
+		t->setPos(2, 2);
+		t->setFontSize(12);
+		auto tt = game->tw.create(t, VX, 100, TType::TBurnIn, 500);
+		tt->onEnd = [t](auto) {
+			rd::Garbage::trash(t);
+		};
+	};
+	if (rs::Input::isJustPressed(Pasta::Key::KB_1)) {
 		weapon = "shotgun";
-	if (rs::Input::isPressed(Pasta::Key::KB_2)) 
+		msg("Shotgun");
+	}
+	else if (rs::Input::isJustPressed(Pasta::Key::KB_2)) {
 		weapon = "plasma";
-	if (rs::Input::isPressed(Pasta::Key::KB_2)) 
+		msg("Plasma Rifle");
+	}
+	else if (rs::Input::isJustPressed(Pasta::Key::KB_3)) {
 		weapon = "rocket";
+		msg("Rocket Launcher");
+	}
 
 	if(move!=vec2(0,0))
 		controlsMove(move,dt);

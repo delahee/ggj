@@ -224,9 +224,24 @@ void Entity::update(double dt) {
 			if (data->name == "imp") {
 				vec2 toPlayer = vec2(game->player->x -x,game->player->y -y);
 				toPlayer = toPlayer.getNormalizedSafeZero();
-				float speed = 1.0;
-				dx = r::Math::lerp(  dx, toPlayer.x, 0.8f);
-				dy = r::Math::lerp(  dy, toPlayer.y, 0.8f);
+				float scale = 0.55f;
+				float speed = 0.66;
+
+				dx *= 0.8f;
+				dx = toPlayer.x * speed;
+				dy = toPlayer.y * speed;
+			}
+			if (data->name == "blob") {
+				vec2 toPlayer = vec2(game->player->x - x, game->player->y - y);
+				toPlayer = toPlayer.getNormalizedSafeZero();
+				float scale = 0.55f;
+				float speed = 0.4f;
+				if (rd::Rand::get().pc(5))
+					speed *= 64.0f;
+				dx *= 0.98f;
+				dy *= 0.98f;
+				dx = toPlayer.x * speed;
+				dy = toPlayer.y * speed;
 			}
 		}
 	}

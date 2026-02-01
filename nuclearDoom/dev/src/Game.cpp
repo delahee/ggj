@@ -128,9 +128,10 @@ Game::Game(r2::Node* _root, r2::Scene* sc, rd::AgentList* parent) : Super(parent
 	rd::AudioMan::get().init();
 
 	map = new Map(root);
-	ui = new UI(root);
+	
 	bulMan = new BulMan(this,&al);
 	player = new Player(this,root);
+	ui = new UI(this, root);
 
 	player->init("player");
 	player->setGridPos(map->playerSpawn.x, map->playerSpawn.y);
@@ -158,6 +159,8 @@ Game::Game(r2::Node* _root, r2::Scene* sc, rd::AgentList* parent) : Super(parent
 		e->setGridPos(pos.x, pos.y);
 		nmies.push_back(e);
 	}
+
+	ui->toFront();
 }
 
 void Game::update(double dt) {
