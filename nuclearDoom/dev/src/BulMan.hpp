@@ -15,8 +15,9 @@ struct Bullet{
 	float	dy = 0;
 	float	frictx = 0.99f;
 	float	fricty = 0.99f;
-	int		life = 120;
+	float	life = 120.0f;
 	int		dmg = 1;
+	int		flags = 0;
 	Str		sprName;
 	Family  fam = Family::Unknown;
 };
@@ -28,7 +29,8 @@ public:
 	};
 
 	enum Flags : s16{
-		Alive
+		Alive = 1<<0,
+		RandRotation=1<<1,
 	};
 
 	int								nbActive = 0;

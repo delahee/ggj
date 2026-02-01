@@ -3,11 +3,16 @@
 class Game;
 
 class Player : public Entity {
+	typedef Entity Super;
 public:
+	std::string		weapon = "shotgun";
 					Player(Game*g,r2::Node* parent);
 
 	virtual void	update(double dt)override;
 
 	void			controlsMove(vec2 move,double dt);
 	void			controls(double dt);
+
+	virtual void	fire(int pixX, int pixY)override;
+
 };

@@ -6,22 +6,22 @@ struct EntityData;
 struct Path;
 class Game;
 
-enum Weapon {
-	Shotgun,
-	Plasma,
-	Rocket,
-	Hit,
-};
 
 struct ProjData{
-	int dmg = 3;
+	int					dmg = 3;
+	int					nb = 1;
+	float				life = 10.0f;
+	float				speed = 150.0f;
+	int					flags = 0;
+	float				frict = 1.0f;
 
-	std::vector<Str>			tags;
-	std::string name;
+	std::vector<Str>	tags;
+	std::string			name = "bullet";
+	std::string			sprName = "bullet";
 };
 
 struct EntityData{
-	Weapon						wp = Hit;
+	std::string					wp;
 	int							hp = 10;
 	int							dmg = 1;
 	float						speed = 25.0f;
@@ -100,7 +100,8 @@ public:
 	void			hit(int dmg, EntityData * by = nullptr);
 
 	void			fire(Entity&opp);
-	void			fire(int pixX, int pixY);
+	virtual void	fire(int pixX, int pixY);
+	virtual void	fire(int pixX, int pixY, ProjData * proj);
 	void			onDeath();
 	bool			isDead();
 	void			updateHits();

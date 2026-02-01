@@ -35,12 +35,35 @@ void Player::controls(double dt){
 		move+={ 1,0 };
 	}
 
+	if (rs::Input::isPressed(Pasta::Key::KB_1)) 
+		weapon = "shotgun";
+	if (rs::Input::isPressed(Pasta::Key::KB_2)) 
+		weapon = "plasma";
+	if (rs::Input::isPressed(Pasta::Key::KB_2)) 
+		weapon = "rocket";
+
 	if(move!=vec2(0,0))
 		controlsMove(move,dt);
 
 	if (rs::Input::isMouseJustPressed(Pasta::Key::MOUSE_LEFT)) {
 		auto mousePos = game->getGameMousePos();
 		fire(mousePos.x, mousePos.y);
+	}
+}
+
+void Player::fire(int pixX, int pixY){
+	auto proj = Data::getProj(weapon.c_str());
+
+	auto rnd = rd::Rand::get();
+	if( proj->nb == 1)
+		Super::fire(pixX, pixY);
+	else 
+	{
+		for (int i = 0; i < proj->nb; ++i) {
+			int nx = pixX + rnd.dice(-12, 12);
+			int ny = pixY + rnd.dice(-12, 12);
+			Super::fire( nx, ny, proj);
+		}
 	}
 }
 

@@ -53,14 +53,20 @@ Entity::~Entity() {
 	dispose();
 }
 
-void Entity::fire(int pixX, int pixY) {
+void Entity::fire(int x, int y) {
+	fire(x, y, Data::getProj("dummy"));
+}
+
+void Entity::fire(int pixX, int pixY, ProjData * proj) {
 	Bullet b;
+
 	auto ppos = getPixelPos();
 	b.x = ppos.x;
 	b.y = ppos.y;
-	b.sprName = "bullet";
+	b.sprName = proj->sprName;
+	b.flags = proj->flags;
 
-	float speed = 150.0f;
+	float speed = proj->speed;
 
 	vec2 dir = { pixX - b.x, pixY - b.y };
 	dir = dir.getNormalizedSafeZero();
@@ -70,11 +76,13 @@ void Entity::fire(int pixX, int pixY) {
 	if (!b.dx && !b.dy) {
 		b.dy = 1;
 	}
-	b.life = 10.0f;
-	b.frictx = b.fricty = 1;
+	b.life = proj->life;
+	b.frictx = b.fricty = proj->frict;
 	b.fam = data->isPlayer() ? Family::Player : Family::Nmy;
 	game->bulMan->addBullet(b);
 }
+
+
 
 void Entity::onDeath(){
 	blinking = 0.5f;
@@ -109,19 +117,20 @@ void Entity::updateHits(){
 		for (int i = 0; i < 16; ++i) {
 
 			int sz = rand.dice(1, 2);
-			r2::Graphics* sp = r2::Graphics::rect(0.0, 0.0, sz, sz, 0xff0000, 1.0f, parent);
+			r2::Graphics* sp = r2::Graphics::rect(-sz*0.5f, -sz*0.5f, sz, sz, 0xff0000, 1.0f, parent);
 			auto p = new r2::fx::Part(sp, &al);
 			p->x = bulx;
-			p->y = buly - 4;
+			p->y = buly - rand.dice(4,12);
 			auto a = rand.angle();
 			float speed = rand.diceF(0.9f, 1.1f);
+			sp->rotation = rand.angle();
 			p->dx = cos(a)*speed;
 			p->dy = sin(a)*speed;
-			p->frictX = p->frictY = 0.92 + rand.diceF(0,0.02);
+			p->frictX = p->frictY = 0.92f + rand.diceF(0,0.02f);
 			p->gy = 0.1f;
-			p->setLife(p->getLife() * rand.diceF(0.9, 1.1f));
-			p->groundY = y + rand.dice(16, 24);
-			p->useBounds = true;
+			p->setLife(p->getLife() * rand.diceF(0.9f, 1.1f));
+			p->groundY = y + rand.dice(12, 24);
+			p->useGround = true;
 		}
 
 		hit(result, 0);

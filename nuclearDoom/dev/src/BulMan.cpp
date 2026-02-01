@@ -47,7 +47,13 @@ void BulMan::update(double _dt) {
 	for (int idx = sz-1; idx >= 0; --idx) {
 		auto& vlife = life[idx];
 		vlife -= dt;
-		if (vlife < 0 && nbActive){
+
+		if (vlife < 0.33f){
+			auto& vspr = spr[idx];
+			vspr->alpha -= dt * 4.0f;
+		}
+
+		if (vlife < 0.0f && nbActive){
 			swap(idx, nbActive - 1);
 			onInactive(nbActive - 1);
 			nbActive--;
@@ -114,6 +120,8 @@ void BulMan::addBullet(Bullet b){
 	ab->setCenterRatio();
 	ab->setPriority(-b.y);
 	ab->setPos(b.x, b.y);
+	if (b.flags & RandRotation)
+		ab->rotation = rd::Rand::get().angle();
 	nbActive++;
 }
 
@@ -169,6 +177,7 @@ void BulMan::im(int idx) {
 	Value("spr", spr[idx]);
 	Value("fam", (int)fam[idx]);
 	Value("bhv", (int)bhv[idx]);
+	Value("flags", (int)flags[idx]);
 }
 
 void BulMan::swap(int idxA, int idxB){
@@ -185,4 +194,5 @@ void BulMan::swap(int idxA, int idxB){
 	std::swap(dmg[idxA]		, dmg[idxB]);
 	std::swap(fam[idxA]		, fam[idxB]);
 	std::swap(bhv[idxA]		, bhv[idxB]);
+	std::swap(flags[idxA]	, flags[idxB]);
 }

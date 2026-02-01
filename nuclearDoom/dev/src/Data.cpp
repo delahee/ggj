@@ -4,6 +4,7 @@
 #include "r2/im/TilePicker.hpp"
 #include "Entity.hpp"
 #include "Data.hpp"
+#include "BulMan.hpp"
 
 rd::TileLib* Data::assets = 0;
 
@@ -12,6 +13,12 @@ std::unordered_map<Str, ProjData*> Data::projs;
 
 void Data::update(double dt) {
 	
+}
+
+ProjData* Data::getProj(const char* name){
+	if( projs.find(name) == projs.end())
+		return projs["dummy"];
+	return projs[name];
 }
 
 void Data::init(){
@@ -53,9 +60,42 @@ void Data::init(){
 
 	{
 		auto d = new ProjData();
-		d->name = "imp";
+		d->name = "imp_bullet";
 		d->tags.push_back("nmy");
 		d->dmg = 3;
+		projs[d->name] = d;
+	}
+
+	{
+		auto d = new ProjData();
+		d->name = "shotgun";
+		d->sprName = "bullet_shotgun";
+		d->tags.push_back("player");
+		d->dmg = 1;
+		d->nb = 5;
+		d->life = 0.3f;
+		d->frict = 0.92f;
+		d->speed *= 4.0f;
+		d->flags |= BulMan::RandRotation;
+		projs[d->name] = d;
+
+	}
+
+	{
+		auto d = new ProjData();
+		d->name = "plasma";
+		d->sprName = "bullet_plasma";
+		d->tags.push_back("player");
+		d->dmg = 1;
+		d->speed *= 2;
+		projs[d->name] = d;
+	}
+
+	{
+		auto d = new ProjData();
+		d->name = "dummy";
+		d->tags.push_back("player");
+		d->dmg = 1;
 		projs[d->name] = d;
 	}
 }
