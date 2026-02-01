@@ -56,5 +56,18 @@ public:
 	bool			isWallGrid(int cx, int cy);
 	void			hitWallPix(float px, float py);
 	void			bloodsplash(int px, int py);
+
+	void			freezeFrame(float dur);
+	void			screenshake(float dur, float dx, float dy);
+	bool			isShaking() { return shakeDur > 0.0f; };
+protected:
+	float			freezeDur = -1.0f;
+	float			shakeDur = -1.0f;
+
+	float			shakeX = 0.0f;
+	float			shakeY = 0.0f;
+
+	float			ocamX = 0.0f;
+	float			ocamY = 0.0f;
 };
 

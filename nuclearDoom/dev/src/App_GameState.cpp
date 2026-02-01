@@ -40,9 +40,9 @@ static void regularBloom(PixelScene* dts, float durMs) {
 
 	dts->uber.bloomEnabled = true;
 	dts->uber.pyramidSize = 5;
-	dts->tw.create(dts, (rs::TVar)PixelScene::VBLOOM_INTENSITY, 0.14, TType::TEaseOut, durMs);
-	dts->tw.create(dts, (rs::TVar)PixelScene::VBLOOM_THRESH, 0.95, TType::TEaseOut, durMs);
-	dts->tw.create(dts, (rs::TVar)PixelScene::VBLOOM_KNEE, 0.60, TType::TEaseOut, durMs);
+	dts->tw.create(dts, (rs::TVar)PixelScene::VBLOOM_INTENSITY, 3, TType::TEaseOut, durMs);
+	dts->tw.create(dts, (rs::TVar)PixelScene::VBLOOM_THRESH, 0.5, TType::TEaseOut, durMs);
+	dts->tw.create(dts, (rs::TVar)PixelScene::VBLOOM_KNEE, 0.7, TType::TEaseOut, durMs);
 
 	r::Color basicBiomeBloomColor(0.3f, 0.5, 0.4f);
 

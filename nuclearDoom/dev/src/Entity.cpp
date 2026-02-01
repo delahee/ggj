@@ -112,9 +112,16 @@ void Entity::fire(int toX, int toY, ProjData * proj) {
 	game->bulMan->addBullet(b);
 }
 
-
 void Entity::onDeath(){
 	blinking = 0.5f;
+
+	if (!data->isPlayer()) {
+		vec2 dist = game->player->getPos() - getPos();
+		dist = dist.getNormalizedSafeZero();
+		dist *= 2.0f;
+		game->screenshake(0.1f, dist.x, dist.y);
+	}
+	game->freezeFrame(0.05f);
 }
 
 bool Entity::isDead(){

@@ -505,6 +505,11 @@ float& Scene::getZoomY() {
 	return cameraScale.y;
 }
 
+vec2 r2::Scene::getZoom()
+{
+	return vec2(cameraPos.x,cameraPos.y);
+}
+
 void Scene::setZoom(float xy) {
 	cameraScale.x = xy;
 	cameraScale.y = xy;

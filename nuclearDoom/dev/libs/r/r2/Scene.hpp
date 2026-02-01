@@ -49,6 +49,7 @@ namespace r2 {
 
 		float&							getZoomX();
 		float&							getZoomY();
+		vec2							getZoom();
 
 		void							setZoom(float xy) ;
 		void							setZoom(float x, float y);

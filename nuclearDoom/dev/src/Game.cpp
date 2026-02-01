@@ -84,14 +84,23 @@ void Game::bloodsplash(int px, int py){
 }
 
 
+void Game::screenshake(float dur, float dx, float dy){
+	auto sc = scRoot->getScene();
+	if (shakeDur < 0)shakeDur = 0;
+	shakeDur += dur;
+	shakeX = dx;
+	shakeY = dy;
+	ocamX = sc->cameraPos.x;
+	ocamY = sc->cameraPos.y;
+}
+
+
 static bool defeated = false;
 void Game::defeat(){
 	if (defeated)
 		return;
 
 }
-
-
 
 void Game::intro(){
 	
@@ -163,10 +172,51 @@ Game::Game(r2::Node* _root, r2::Scene* sc, rd::AgentList* parent) : Super(parent
 	ui->toFront();
 }
 
+void Game::freezeFrame(float dur ){
+	if (freezeDur < 0)
+		freezeDur = 0;
+	freezeDur += dur;
+}
+
 void Game::update(double dt) {
 	Super::update(dt);
 
+	float nbFr = dt / (1.0 / 60.0);
+	auto sc = scRoot->getScene();
+	bool wasShaking = isShaking();
+	shakeDur -= dt;
+
+	if (shakeDur > 0.0f) {
+		sc->cameraPos.x = ocamX + shakeX;
+		sc->cameraPos.y = ocamY + shakeY;
+		shakeX = -shakeX;
+		shakeY = -shakeY;
+		sc->syncViewMatrix();
+	}
+	else {
+		if (wasShaking && !isShaking()) {
+			sc->cameraPos.x = ocamX;
+			sc->cameraPos.y = ocamY;
+			sc->syncViewMatrix();
+		}
+	}
+
+	if (freezeDur >= 0) {
+		freezeDur -= dt;
+		//return;
+	}
+
 	controls(dt);
+
+	//regular pan
+	bool isCameraTweened = tw.exists(sc, (rs::TVar)r2::Scene::VCamPosX);
+	if( !wasShaking && ! isShaking() && !isCameraTweened){
+		float destX = (player->getPos().x ) - scRoot->x * sc->getZoomX();
+		float destY = (player->getPos().y ) - scRoot->y * sc->getZoomX();
+		sc->cameraPos.x = r::Math::lerp(sc->cameraPos.x, destX, pow(0.8f,nbFr));
+		sc->cameraPos.y = r::Math::lerp(sc->cameraPos.y, destY, pow(0.8f,nbFr));
+	}
+
 	al.update(dt);
 	tw.update(dt);
 #ifdef PASTA_DEBUG
@@ -271,6 +321,16 @@ bool Game::im(){
 					b->x = 16 + i * b->width();
 					b->y = 16;
 				}
+			}
+
+			if (Button("Shake 2,0")) {
+				screenshake(0.2, 2, 0);
+			}
+			if (Button("Shake 0,2")) {
+				screenshake(0.2, 0, 2);
+			}
+			if (Button("Shake 2,2")) {
+				screenshake(0.2, 2, 2);
 			}
 
 			if (Button("Blob")) {
