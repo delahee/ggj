@@ -61,9 +61,22 @@ void Player::controls(double dt){
 	if(move!=vec2(0,0))
 		controlsMove(move,dt);
 
-	if (rs::Input::isMouseJustPressed(Pasta::Key::MOUSE_LEFT)) {
-		auto mousePos = game->getGameMousePos();
-		fire(mousePos.x, mousePos.y);
+	bool isGunAuto = false;
+	auto proj = Data::getProj(weapon.c_str());
+	if (weapon == "plasma")
+		isGunAuto = true;
+
+	if (!isGunAuto) {
+		if (rs::Input::isMouseJustPressed(Pasta::Key::MOUSE_LEFT)) {
+			auto mousePos = game->getGameMousePos();
+			fire(mousePos.x, mousePos.y);
+		}
+	}
+	else {
+		if (rs::Input::isMousePressed(Pasta::Key::MOUSE_LEFT)) {
+			auto mousePos = game->getGameMousePos();
+			fire(mousePos.x, mousePos.y);
+		}
 	}
 }
 
@@ -72,7 +85,7 @@ void Player::fire(int pixX, int pixY){
 
 	auto rnd = rd::Rand::get();
 	if( proj->nb == 1)
-		Super::fire(pixX, pixY);
+		Super::fire(pixX, pixY,proj);
 	else 
 	{
 		for (int i = 0; i < proj->nb; ++i) {

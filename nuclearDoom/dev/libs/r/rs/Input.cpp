@@ -202,6 +202,14 @@ bool rs::Input::isMouseJustPressed(Pasta::Key k){
 	InputMgr* mgr = Pasta::InputMgr::getSingleton();
 	if (mgr->keyHasJustBeenPressed(Pasta::ControllerType::CT_MOUSE, k))
 		return true;
+	return false;
+}
+
+bool rs::Input::isMousePressed(Pasta::Key k) {
+	InputMgr* mgr = Pasta::InputMgr::getSingleton();
+	if (mgr->keyIsPressed(Pasta::ControllerType::CT_MOUSE, k))
+		return true;
+	return false;
 }
 
 bool rs::Input::isJustReleased(Pasta::Key k)

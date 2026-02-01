@@ -57,6 +57,7 @@ namespace rs {
 			static bool isJustPressed(Pasta::Key k);
 			static bool isJustReleased(Pasta::Key k);
 			static bool isMouseJustPressed(Pasta::Key k);
+			static bool isMousePressed(Pasta::Key k);
 			static float getWheelValue();
 	};
 
