@@ -154,13 +154,16 @@ void Entity::updateHits(){
 	game->bulMan->testBullet(x, y, fam, 16>>1, result);
 	
 	if (result >= 0) {
-		//recoil
 		int bulx = game->bulMan->x[result];
 		int buly = game->bulMan->y[result];
 		int buldx = game->bulMan->dx[result];
 		int buldy = game->bulMan->dy[result];
-		dx += buldx * 0.01f;
-		dy += buldy * 0.01f;
+		if (data->name != "boss") {
+			//recoil
+			
+			dx += buldx * 0.01f;
+			dy += buldy * 0.01f;
+		}
 
 		//
 		int dmg = game->bulMan->getBulletDmg(result);
