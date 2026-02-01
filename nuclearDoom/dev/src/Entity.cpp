@@ -93,16 +93,39 @@ void Entity::updateHits(){
 	game->bulMan->testBullet(x, y, fam, 16>>1, result);
 	
 	if (result >= 0) {
+		//recoil
 		int bulx = game->bulMan->x[result];
 		int buly = game->bulMan->y[result];
 		int buldx = game->bulMan->dx[result];
 		int buldy = game->bulMan->dy[result];
-
 		dx += buldx * 0.01f;
 		dy += buldy * 0.01f;
+		//
 
+		//
 		int dmg = game->bulMan->getBulletDmg(result);
+
+		rd::Rand& rand = Rand::get();
+		for (int i = 0; i < 16; ++i) {
+
+			int sz = rand.dice(1, 2);
+			r2::Graphics* sp = r2::Graphics::rect(0.0, 0.0, sz, sz, 0xff0000, 1.0f, parent);
+			auto p = new r2::fx::Part(sp, &al);
+			p->x = bulx;
+			p->y = buly - 4;
+			auto a = rand.angle();
+			float speed = rand.diceF(0.9f, 1.1f);
+			p->dx = cos(a)*speed;
+			p->dy = sin(a)*speed;
+			p->frictX = p->frictY = 0.92 + rand.diceF(0,0.02);
+			p->gy = 0.1f;
+			p->setLife(p->getLife() * rand.diceF(0.9, 1.1f));
+			p->groundY = y + rand.dice(16, 24);
+			p->useBounds = true;
+		}
+
 		hit(result, 0);
+
 		game->bulMan->destroy(result);
 	}
 }
